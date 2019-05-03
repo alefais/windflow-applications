@@ -14,6 +14,7 @@
 
 #include "util/cli_util.hpp"
 #include "nodes/source.hpp"
+#include "nodes/predictor.hpp"
 #include "nodes/sink.hpp"
 
 using namespace std;
@@ -27,7 +28,6 @@ int main(int argc, char* argv[]) {
     size_t source_par_deg;
     size_t predictor_par_deg;
     size_t sink_par_deg;
-    size_t all_par_deg;
     int rate;
 
     /*
@@ -75,7 +75,10 @@ int main(int argc, char* argv[]) {
             switch (option) {
                 case 'f': file_path = optarg;
                     break;
-                case 'n': all_par_deg = atoi(optarg);
+                case 'n':
+                    source_par_deg = atoi(optarg);
+                    predictor_par_deg = atoi(optarg);
+                    sink_par_deg = atoi(optarg);
                     break;
                 case 'r': rate = atoi(optarg);
                     break;
@@ -86,7 +89,7 @@ int main(int argc, char* argv[]) {
         }
         // check values
         cout << "You pass file " << file_path << endl;
-        cout << "You pass pardeg " << all_par_deg << endl;
+        cout << "You pass pardeg " << source_par_deg << endl;
         cout << "You pass rate " << rate << endl;
     } else if (argc == 2) {
         while ((getopt_long(argc, argv, "h", long_opts, &index)) != -1) {
@@ -98,22 +101,33 @@ int main(int argc, char* argv[]) {
         exit(EXIT_SUCCESS);
     }
 
+    // application starting time
+    unsigned long app_start_time = current_time_usecs();
+
     /// create the nodes
-    Source_Functor source_functor(file_path, ",", rate);
+    Source_Functor source_functor(file_path, ",", rate, app_start_time);
     Source source = Source_Builder(source_functor)
-            .withParallelism(all_par_deg) //(source_par_deg)
+            .withParallelism(source_par_deg)
             .withName("source")
             .build();
 
-    Sink_Functor sink_functor(rate);
+    Predictor_Functor predictor_functor;
+    FlatMap predictor = FlatMap_Builder(predictor_functor)
+            .withParallelism(predictor_par_deg)
+            .withName("predictor")
+            .keyBy()
+            .build();
+
+    Sink_Functor sink_functor(rate, app_start_time);
     Sink sink = Sink_Builder(sink_functor)
-            .withParallelism(all_par_deg) //(sink_par_deg)
+            .withParallelism(sink_par_deg)
             .withName("sink")
             .build();
 
     /// create the multi pipe
     MultiPipe topology("FraudDetection");
     topology.add_source(source);
+    topology.add(predictor);
     topology.add_sink(sink);
     if (topology.run_and_wait_end() < 0)
         cerr << "Error executing FraudDetection topology" << endl;
