@@ -33,7 +33,7 @@ private:
     long generated_tuples;                      // tuples counter
 
     // time variables
-    unsigned long start_time;
+    unsigned long app_start_time;
     unsigned long current_time;
     unsigned long interval;
 
@@ -82,14 +82,23 @@ public:
      *  @param _split_regex regular expression used to parse the file (it depends on the input file format
      *                      e.g. for a file input.csv the regular expression to be used is ",")
      *  @param _rate stream generation rate
+     *  @param _app_start_time application starting time
      */
-    Source_Functor(const string& _file_path, const string& _split_regex, const int _rate) :
-            file_path(_file_path), split_regex(_split_regex), rate(_rate),
-            entity_unique_key(0), next_tuple_idx(0), generations(0), generated_tuples(0)
+    Source_Functor(const string& _file_path,
+                   const string& _split_regex,
+                   const int _rate,
+                   const unsigned long _app_start_time):
+                   file_path(_file_path),
+                   split_regex(_split_regex),
+                   rate(_rate),
+                   app_start_time(_app_start_time),
+                   current_time(_app_start_time),
+                   entity_unique_key(0),
+                   next_tuple_idx(0),
+                   generations(0),
+                   generated_tuples(0)
     {
         // initialize time variables
-        start_time = current_time_usecs();
-        current_time = start_time;
         interval = 1000000L; // 1 second (microseconds)
 
         map_and_parse();
@@ -101,7 +110,7 @@ public:
      *  @return true if the stream is not ended, false if the EOS has been reached
      */
     bool operator()(tuple_t& t) {
-        current_time = current_time_usecs();
+        if (generated_tuples > 0) current_time = current_time_usecs();
         if (next_tuple_idx == 0) generations++;         // file generations counter
         generated_tuples++;                             // tuples counter
 
@@ -111,21 +120,23 @@ public:
         t.record = tuple_content.second;
         t.key = (entity_key_map.find(t.entity_id)->second).first;
         t.id = ((entity_key_map.find(t.entity_id))->second).second++;
-        t.ts = current_time;// - start_time;
-
-        next_tuple_idx = (next_tuple_idx + 1) % parsed_file.size();   // index of the next tuple to be sent
+        t.ts = current_time - app_start_time;
 
         if (rate != -1) // stream generation rate is fixed
             active_delay(interval / rate);
 
-        if (current_time - start_time >= app_run_time && next_tuple_idx == 0) { // if EOS
-            cout << "[Source] execution time: " << (current_time - start_time) / 1000000L
+        next_tuple_idx = (next_tuple_idx + 1) % parsed_file.size();   // index of the next tuple to be sent (if any)
+
+        // EOS reached
+        if (current_time - app_start_time >= app_run_time && next_tuple_idx == 0) {
+            cout << "[Source] execution time: " << (current_time - app_start_time) / 1000000L
                  << " s, generations: " << generations
-                 << " , bandwidth: " << generated_tuples / ((current_time - start_time) / 1000000L)
+                 << " generated: " << generated_tuples
+                 << " , bandwidth: " << generated_tuples / ((current_time - app_start_time) / 1000000L)
                  << " tuples/s" << endl;
             return false;
         }
-        return true;
+        return true;         // stream not ended yet
     }
 
     ~Source_Functor() {}

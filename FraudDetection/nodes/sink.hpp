@@ -1,5 +1,5 @@
 /**
- *  @file    source.hpp
+ *  @file    sink.hpp
  *  @author  Alessandra Fais
  *  @date    03/05/2019
  *
@@ -16,6 +16,7 @@
 class Sink_Functor {
 private:
     int rate;                               // stream generation rate
+    unsigned long app_start_time;
     size_t processed;                       // tuples counter
     vector<unsigned long> tuple_latencies;  // contains the latency of each received tuple
 
@@ -38,27 +39,34 @@ public:
     /**
      *  Constructor.
      *  @param _rate stream generation rate
+     *  @param _app_start_time application starting time
      */
-    Sink_Functor(const int _rate): rate(_rate), processed(0) {}
+    Sink_Functor(const int _rate,
+                 const unsigned long _app_start_time):
+                 rate(_rate),
+                 app_start_time(_app_start_time),
+                 processed(0) {}
 
-    void operator()(optional<tuple_t>& t) {
+    void operator()(optional<result_t>& t) {
         if (t) {
-            /*cout << "Received tuple: "
+            /*cout << "[Sink] Received tuple: "
                  << t->entity_id << " - "
-                 << t->record << ", "
+                 << t->score << " - "
+                 << t->states << ", "
                  << t->key << " - "
                  << t->id << " - "
                  << t->ts << endl;*/
 
             // evaluate tuple latency
             if (rate != -1) {
-                unsigned long tuple_latency = current_time_usecs() - (*t).ts;
+                unsigned long tuple_latency = current_time_usecs() - (app_start_time + (*t).ts);
                 tuple_latencies.insert(tuple_latencies.end(), tuple_latency);
             }
             processed++;        // tuples counter
         } else {     // EOS
             cout << "[Sink] processed tuples: " << processed
-                 << ", average latency: " << fixed << setprecision(3) << get_average_latency() / 1000 << " ms" << endl;
+                 << ", average latency: " << fixed << setprecision(3) << get_average_latency()// / 1000 << " ms" << endl;
+                 << " usecs" << endl;
         }
     }
 };
