@@ -29,7 +29,8 @@ struct tuple_t {
     tuple_t() : entity_id(""), record(""), key(0), id(0), ts(0) {}
 
     // constructor
-    tuple_t(string _entity_id, string _record, size_t _key, uint64_t _id, uint64_t _ts) {}
+    tuple_t(string _entity_id, string _record, size_t _key, uint64_t _id, uint64_t _ts) :
+        entity_id(_entity_id), record(_record), key(_key), id(_id), ts(_ts) {}
 
     // getInfo method
     tuple<size_t, uint64_t, uint64_t> getInfo() const {
