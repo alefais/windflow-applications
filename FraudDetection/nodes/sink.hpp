@@ -1,7 +1,7 @@
 /**
  *  @file    sink.hpp
  *  @author  Alessandra Fais
- *  @date    03/05/2019
+ *  @date    04/05/2019
  *
  *  @brief Sink node that receives and prints the results
  */
@@ -13,6 +13,11 @@
 #include <ff/ff.hpp>
 #include "../util/tuple.hpp"
 
+/**
+ *  @class Sink_Functor
+ *
+ *  @brief Defines the logic of the Sink
+ */
 class Sink_Functor {
 private:
     int rate;                               // stream generation rate
@@ -23,6 +28,7 @@ private:
     /**
      * Evaluate the average latency value (average time needed by a tuple in order to
      * traverse the whole pipeline).
+     *
      * @return average latency
      */
     double get_average_latency() {
@@ -37,7 +43,8 @@ private:
 public:
 
     /**
-     *  Constructor.
+     *  @brief Constructor
+     *
      *  @param _rate stream generation rate
      *  @param _app_start_time application starting time
      */
@@ -47,6 +54,11 @@ public:
                  app_start_time(_app_start_time),
                  processed(0) {}
 
+    /**
+     * @brief Print results and evaluate average latency (when required)
+     *
+     * @param t input tuple
+     */
     void operator()(optional<result_t>& t) {
         if (t) {
             /*cout << "[Sink] Received tuple: "

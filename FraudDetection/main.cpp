@@ -20,15 +20,15 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    /// parse arguments from command line
+    // parse arguments from command line
     int option = 0;
     int index = 0;
 
     string file_path;
-    size_t source_par_deg;
-    size_t predictor_par_deg;
-    size_t sink_par_deg;
-    int rate;
+    size_t source_par_deg = 0;
+    size_t predictor_par_deg = 0;
+    size_t sink_par_deg = 0;
+    int rate = 0;
 
     /* Program options:
      * - case (argc == 11):
@@ -87,38 +87,38 @@ int main(int argc, char* argv[]) {
     // application starting time
     unsigned long app_start_time = current_time_usecs();
 
-    /// create the nodes
+    // create the nodes
     Source_Functor source_functor(file_path, ",", rate, app_start_time);
     Source source = Source_Builder(source_functor)
             .withParallelism(source_par_deg)
-            .withName("source")
+            .withName(source_name)
             .build();
 
     Predictor_Functor predictor_functor;
     FlatMap predictor = FlatMap_Builder(predictor_functor)
             .withParallelism(predictor_par_deg)
-            .withName("predictor")
+            .withName(predictor_name)
             .keyBy()
             .build();
 
     Sink_Functor sink_functor(rate, app_start_time);
     Sink sink = Sink_Builder(sink_functor)
             .withParallelism(sink_par_deg)
-            .withName("sink")
+            .withName(sink_name)
             .build();
 
     // print application description
     print_app_descr(file_path, source_par_deg, predictor_par_deg, sink_par_deg, rate);
 
-    /// create the multi pipe
-    MultiPipe topology("FraudDetection");
+    // create the multi pipe
+    MultiPipe topology(topology_name);
     topology.add_source(source);
     topology.add(predictor);
     topology.add_sink(sink);
     if (topology.run_and_wait_end() < 0)
-        cerr << "Error executing FraudDetection topology" << endl;
+        cerr << app_error << endl;
     else
-        cout << "Terminated execution of FraudDetection topology with cardinality " << topology.cardinality() << endl;
+        cout << app_termination << topology.cardinality() << endl;
 
     return 0;
 }

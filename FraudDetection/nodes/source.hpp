@@ -1,7 +1,7 @@
 /**
  *  @file    source.hpp
  *  @author  Alessandra Fais
- *  @date    03/05/2019
+ *  @date    04/05/2019
  *
  *  @brief Source node that generates the input stream
  */
@@ -20,6 +20,11 @@ using namespace std;
 using count_key_t = pair<size_t, uint64_t>;
 using key_map_t = unordered_map<string, count_key_t>;
 
+/**
+ *  @class Source_Functor
+ *
+ *  @brief Define the logic of the Source
+ */
 class Source_Functor {
 private:
     string file_path;                           // path of the input file
@@ -38,8 +43,10 @@ private:
     unsigned long interval;
 
     /**
+     *  @brief Map keys and parse the input file
+     *
      *  This method assigns to each string key entity_id a unique integer key (required by the current
-     *  implementation of WindFlow). The file is also parsed and saved into a vector.
+     *  implementation of WindFlow). Moreover, the file is parsed and saved into a vector.
      */
     void map_and_parse() {
         ifstream file(file_path);
@@ -63,7 +70,8 @@ private:
     }
 
     /**
-     *  Add some active delay (busy-waiting function).
+     *  @brief Add some active delay (busy-waiting function)
+     *
      *  @param waste_time wait time in microseconds
      */
     void active_delay(unsigned long waste_time) {
@@ -77,7 +85,8 @@ private:
 
 public:
     /**
-     *  Constructor.
+     *  @brief Constructor.
+     *
      *  @param _file_path path of the input dataset file
      *  @param _split_regex regular expression used to parse the file (it depends on the input file format
      *                      e.g. for a file input.csv the regular expression to be used is ",")
@@ -105,7 +114,8 @@ public:
     }
 
     /**
-     *  Send tuples in a item-by-item fashion
+     *  @brief Send tuples in a item-by-item fashion
+     *
      *  @param t reference to the tuple structure
      *  @return true if the stream is not ended, false if the EOS has been reached
      */

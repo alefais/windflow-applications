@@ -3,9 +3,10 @@
  * @author  Alessandra Fais
  * @date    04/05/2019
  *
- * @brief Util for command line options parsing
+ * @brief Util for parsing command line options and printing information on stdout
  *
- * This file contains functions and constants used for command line options parsing.
+ * This file contains functions and constants used for parsing command line options
+ * and for showing information about the application on stdout.
  */
 
 #ifndef FRAUDDETECTION_CLI_UTIL_HPP
@@ -19,10 +20,10 @@ typedef enum { NONE, REQUIRED } opt_arg;    // an option can require one argumen
 
 const struct option long_opts[] = {
         {"help", NONE, 0, 'h'},
-        {"file", REQUIRED, 0, 'f'},         // file path
-        {"nsource", REQUIRED, 0, 's'},      // pipe start (source)
-        {"npredictor", REQUIRED, 0, 'p'},   // predictor
-        {"nsink", REQUIRED, 0, 'e'},        // pipe end (sink)
+        {"file", REQUIRED, 0, 'f'},         // input file path
+        {"nsource", REQUIRED, 0, 's'},      // pipe start (source) parallelism degree
+        {"npredictor", REQUIRED, 0, 'p'},   // predictor parallelism degree
+        {"nsink", REQUIRED, 0, 'e'},        // pipe end (sink) parallelism degree
         {"pardeg", REQUIRED, 0, 'n'},       // parallelism degree for all nodes
         {"rate", REQUIRED, 0, 'r'},         // stream generation rate
         {0, 0, 0, 0}
@@ -34,13 +35,16 @@ const string run_mode1 = " --file [file_path] --nsource [source_par_deg] --npred
 const string run_mode2 = " --file [file_path] --pardeg [par_deg_for_all_nodes] --rate [stream_gen_rate]";
 const string run_help = " --help";
 
-// application parameters
+// information about application
 const string app_descr = "Executing FraudDetection with parameters:";
 const string file_str = "* file path: ";
 const string source_str = "* source parallelism degree: ";
 const string predictor_str = "* predictor parallelism degree: ";
 const string sink_str = "* sink parallelism degree: ";
 const string rate_str = "* rate: ";
+
+const string app_error = "Error executing FraudDetection topology";
+const string app_termination = "Terminated execution of FraudDetection topology with cardinality ";
 
 inline void print_help(char* arg) {
     cout << intro << endl

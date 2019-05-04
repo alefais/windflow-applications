@@ -1,9 +1,9 @@
 /**
  *  @file    predictor.hpp
  *  @author  Alessandra Fais
- *  @date    03/05/2019
+ *  @date    04/05/2019
  *
- *  @brief Node that implements the outliers detection
+ *  @brief Node that implements outliers detection
  */
 
 #ifndef FRAUDDETECTION_PREDICTOR_HPP
@@ -17,9 +17,15 @@
 using namespace ff;
 using namespace std;
 
+/**
+ *  @class Predictor_Functor
+ *
+ *  @brief Define the logic of the Predictor
+ */
 class Predictor_Functor {
 private:
     size_t processed;       // tuples counter
+    unordered_map<size_t, uint64_t> keys;
 
     // time variables
     unsigned long start_time;
@@ -28,7 +34,7 @@ private:
 public:
 
     /**
-     * Constructor.
+     *  @brief Constructor
      */
     Predictor_Functor(): processed(0) {
         // initialize time variables
@@ -36,6 +42,15 @@ public:
         current_time = start_time;
     }
 
+    /**
+     *  @brief Detect outliers
+     *
+     *  Given a transaction sequence of a customer, there is a probability associated with each path
+     *  of state transition which indicates the chances of fraudolent activities. Only tuples for
+     *  which an outlier has been identified are sent out.
+     *  @param t input tuple
+     *  @param shipper shipper object used for the delivery of results
+     */
     void operator()(const tuple_t& t, Shipper<result_t>& shipper) {
         /*cout << "[Predictor] Received tuple: "
                  << t->entity_id << " - "
@@ -54,9 +69,19 @@ public:
             shipper.push(r);
         }
         processed++;
+
+        if (keys.find(t.key) == keys.end())
+            keys.insert(make_pair(t.key, t.id));
+        else
+            (keys.find(t.key))->second = t.id;
     }
 
-    ~Predictor_Functor() {}
+    ~Predictor_Functor() {
+        cout << "Received keys are: " << endl;
+        for (auto k : keys) {
+            cout << "key: " << k.first << " id: " << k.second << endl;
+        }
+    }
 };
 
 #endif //FRAUDDETECTION_PREDICTOR_HPP
