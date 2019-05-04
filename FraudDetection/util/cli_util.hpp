@@ -15,31 +15,6 @@
 
 using namespace std;
 
-/*
-class OptionsParser{
-public:
-    OptionsParser (int& argc, char* argv[]){
-        for (int i=1; i < argc; ++i)
-            tokens.emplace_back(argv[i]);
-    }
-
-    const string& getOption(const string& option) const {
-        vector<string>::const_iterator itr;
-        itr = find(tokens.begin(), tokens.end(), option);
-        if (itr != tokens.end() && ++itr != tokens.end()){
-            return *itr;
-        }
-        static const string empty_string("");
-        return empty_string;
-    }
-
-    bool isOption(const string& option) const {
-        return find(tokens.begin(), tokens.end(), option) != tokens.end();
-    }
-private:
-    vector<string> tokens;
-};*/
-
 typedef enum { NONE, REQUIRED } opt_arg;    // an option can require one argument or none
 
 const struct option long_opts[] = {

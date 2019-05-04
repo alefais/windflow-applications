@@ -30,13 +30,6 @@ int main(int argc, char* argv[]) {
     size_t sink_par_deg;
     int rate;
 
-    /*
-    OptionsParser op(argc, argv);
-    const string& file_name = op.getOption("-file");
-    if (!file_name.empty()){
-        cout << "Parsed file name " << file_name << endl;
-    }*/
-
     /* Program options:
      * - case (argc == 11):
      * specified parameters are --file, --nsource, --npredictor, --nsink, --rate (and their arguments)
