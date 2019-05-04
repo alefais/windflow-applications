@@ -1,7 +1,7 @@
 /**
  *  @file    main.cpp
  *  @author  Alessandra Fais
- *  @date    03/05/2019
+ *  @date    04/05/2019
  *
  *  @brief main of the FraudDetection application
  */
@@ -57,12 +57,6 @@ int main(int argc, char* argv[]) {
                     exit(EXIT_SUCCESS);
             }
         }
-        // check values
-        cout << "You pass file " << file_path << endl;
-        cout << "You pass nsource " << source_par_deg << endl;
-        cout << "You pass npredictor " << predictor_par_deg << endl;
-        cout << "You pass nsink " << sink_par_deg << endl;
-        cout << "You pass rate " << rate << endl;
     } else if (argc == 7) {
         while ((option = getopt_long(argc, argv, "f:n:r:", long_opts, &index)) != -1) {
             switch (option) {
@@ -80,10 +74,6 @@ int main(int argc, char* argv[]) {
                     exit(EXIT_SUCCESS);
             }
         }
-        // check values
-        cout << "You pass file " << file_path << endl;
-        cout << "You pass pardeg " << source_par_deg << endl;
-        cout << "You pass rate " << rate << endl;
     } else if (argc == 2) {
         while ((getopt_long(argc, argv, "h", long_opts, &index)) != -1) {
             print_help(argv[0]);
@@ -116,6 +106,9 @@ int main(int argc, char* argv[]) {
             .withParallelism(sink_par_deg)
             .withName("sink")
             .build();
+
+    // print application description
+    print_app_descr(file_path, source_par_deg, predictor_par_deg, sink_par_deg, rate);
 
     /// create the multi pipe
     MultiPipe topology("FraudDetection");

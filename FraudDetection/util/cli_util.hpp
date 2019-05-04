@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    30/04/2019
+ * @date    04/05/2019
  *
  * @brief Util for command line options parsing
  *
@@ -28,10 +28,19 @@ const struct option long_opts[] = {
         {0, 0, 0, 0}
 };
 
+// how to run the application
 const string intro = "Run FraudDetection choosing one of the following ways:";
 const string run_mode1 = " --file [file_path] --nsource [source_par_deg] --npredictor [predictor_par_deg] --nsink [sink_par_deg] --rate [stream_gen_rate]";
 const string run_mode2 = " --file [file_path] --pardeg [par_deg_for_all_nodes] --rate [stream_gen_rate]";
 const string run_help = " --help";
+
+// application parameters
+const string app_descr = "Executing FraudDetection with parameters:";
+const string file_str = "* file path: ";
+const string source_str = "* source parallelism degree: ";
+const string predictor_str = "* predictor parallelism degree: ";
+const string sink_str = "* sink parallelism degree: ";
+const string rate_str = "* rate: ";
 
 inline void print_help(char* arg) {
     cout << intro << endl
@@ -41,6 +50,15 @@ inline void print_help(char* arg) {
          << run_mode2 << endl
          << arg
          << run_help << endl;
+}
+
+inline void print_app_descr(string f, size_t source, size_t pred, size_t sink, int rate) {
+    cout << app_descr << endl
+         << file_str << f << endl
+         << source_str << source << endl
+         << predictor_str << pred << endl
+         << sink_str << sink << endl
+         << rate_str << rate << endl;
 }
 
 #endif //FRAUDDETECTION_CLI_UTIL_HPP
