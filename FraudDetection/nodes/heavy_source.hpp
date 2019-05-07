@@ -1,13 +1,13 @@
 /**
- *  @file    source.hpp
+ *  @file    heavy_source.hpp
  *  @author  Alessandra Fais
- *  @date    04/05/2019
+ *  @date    07/05/2019
  *
  *  @brief Source node that generates the input stream
  */
 
-#ifndef FRAUDDETECTION_SOURCE_HPP
-#define FRAUDDETECTION_SOURCE_HPP
+#ifndef FRAUDDETECTION_HEAVY_SOURCE_HPP
+#define FRAUDDETECTION_HEAVY_SOURCE_HPP
 
 #include <fstream>
 #include <vector>
@@ -39,6 +39,7 @@ private:
 
     // time variables
     unsigned long app_start_time;
+    unsigned long start_time;
     unsigned long current_time;
     unsigned long interval;
 
@@ -46,7 +47,7 @@ private:
      *  @brief Map keys and parse the input file
      *
      *  This method assigns to each string key entity_id a unique integer key (required by the current
-     *  implementation of WindFlow). Moreover, the file is parsed and saved into a vector.
+     *  implementation of WindFlow). Moreover, the file is parsed and saved in memory.
      */
     void map_and_parse() {
         ifstream file(file_path);
@@ -109,6 +110,7 @@ public:
     {
         // initialize time variables
         interval = 1000000L; // 1 second (microseconds)
+        start_time = current_time_usecs();
 
         map_and_parse();
     }
@@ -139,10 +141,10 @@ public:
 
         // EOS reached
         if (current_time - app_start_time >= app_run_time && next_tuple_idx == 0) {
-            cout << "[Source] execution time: " << (current_time - app_start_time) / 1000000L
+            cout << "[Source] execution time: " << (current_time - start_time) / 1000000L
                  << " s, generations: " << generations
-                 << " generated: " << generated_tuples
-                 << " , bandwidth: " << generated_tuples / ((current_time - app_start_time) / 1000000L)
+                 << ", generated: " << generated_tuples
+                 << ", bandwidth: " << generated_tuples / ((current_time - start_time) / 1000000L)
                  << " tuples/s" << endl;
             return false;
         }
@@ -152,4 +154,4 @@ public:
     ~Source_Functor() {}
 };
 
-#endif //FRAUDDETECTION_SOURCE_HPP
+#endif //FRAUDDETECTION_HEAVY_SOURCE_HPP
