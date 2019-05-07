@@ -4,6 +4,7 @@ INCLUDE_DIR		= $(HOME)/WindFlow/includes/
 
 CXX 			= /usr/local/gcc-7.2.0/bin/g++
 CXXFLAGS		= -std=c++17
+MACRO           = -DFF_BOUNDED_BUFFER
 INCLUDES		= -I $(FF_ROOT) -I $(INCLUDE_DIR) -I .
 OPTFLAGS		= -g -O3 -finline-functions
 LDFLAGS			= -pthread
@@ -14,7 +15,7 @@ TGTS			:= $(basename $(SRCS))
 all: $(TGTS)
 
 %: %.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OPTFLAGS) $(LDFLAGS) -o $(OUT_DIR)/$@ $<
+	$(CXX) $(CXXFLAGS) $(MACRO) $(INCLUDES) $(OPTFLAGS) $(LDFLAGS) -o $(OUT_DIR)/$@ $<
 
 clean:
 	rm -f $(OUT_DIR)/*
