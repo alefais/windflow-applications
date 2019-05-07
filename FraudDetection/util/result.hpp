@@ -1,7 +1,7 @@
 /**
  *  @file    result.hpp
  *  @author  Alessandra Fais
- *  @date    04/05/2019
+ *  @date    06/05/2019
  *
  *  @brief Structure of a tuple result of the FlatMap
  *
@@ -19,18 +19,18 @@
 using namespace std;
 
 struct result_t {
-    string entity_id;   // identifies the customer
-    double_t score;     // indicates the chances of fraudolent activity associated with the transaction sequence
-    string states;      // transaction sequence
-    size_t key;         // key
-    uint64_t id;        // id
-    uint64_t ts;        // timestamp
+    string entity_id;        // identifies the customer
+    double_t score;          // indicates the chances of fraudolent activity associated with the transaction sequence
+    vector<string> states;   // transaction sequence
+    size_t key;              // key
+    uint64_t id;             // id
+    uint64_t ts;             // timestamp
 
     // default constructor
-    result_t() : entity_id(""), score(0.0), states(""), key(0), id(0), ts(0) {}
+    result_t() : entity_id(""), score(0.0), states(), key(0), id(0), ts(0) {}
 
     // constructor
-    result_t(string _entity_id, double_t _score, string _states, size_t _key, uint64_t _id, uint64_t _ts) :
+    result_t(string _entity_id, double_t _score, vector<string>& _states, size_t _key, uint64_t _id, uint64_t _ts) :
             entity_id(_entity_id), score(_score), states(_states), key(_key), id(_id), ts(_ts) {}
 
     // getInfo method
