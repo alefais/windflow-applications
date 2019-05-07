@@ -1,26 +1,25 @@
 /**
- *  @file    main.cpp
+ *  @file    main_heavy_source.cpp
  *  @author  Alessandra Fais
- *  @date    04/05/2019
+ *  @date    07/05/2019
  *
  *  @brief main of the FraudDetection application
  */
 
 #include <iostream>
 #include <string>
-#include <getopt.h>
 #include <ff/ff.hpp>
 #include <windflow.hpp>
 
 #include "util/cli_util.hpp"
-#include "nodes/source.hpp"
+#include "nodes/heavy_source.hpp"
 #include "nodes/predictor.hpp"
 #include "nodes/sink.hpp"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    // parse arguments from command line
+    /// parse arguments from command line
     int option = 0;
     int index = 0;
 
@@ -84,14 +83,14 @@ int main(int argc, char* argv[]) {
         exit(EXIT_SUCCESS);
     }
 
-    // application starting time
+    /// application starting time
     unsigned long app_start_time = current_time_usecs();
 
-    // create the nodes
+    /// create the nodes
     Source_Functor source_functor(file_path, ",", rate, app_start_time);
     Source source = Source_Builder(source_functor)
             .withParallelism(source_par_deg)
-            .withName(source_name)
+            .withName(heavy_source_name)
             .build();
 
     Predictor_Functor predictor_functor;
@@ -107,10 +106,10 @@ int main(int argc, char* argv[]) {
             .withName(sink_name)
             .build();
 
-    // print application description
+    /// print application description
     print_app_descr(file_path, source_par_deg, predictor_par_deg, sink_par_deg, rate);
 
-    // create the multi pipe
+    /// create the multi pipe
     MultiPipe topology(topology_name);
     topology.add_source(source);
     topology.add(predictor);
