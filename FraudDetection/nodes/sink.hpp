@@ -61,10 +61,14 @@ public:
      */
     void operator()(optional<result_t>& t) {
         if (t) {
-            /*cout << "[Sink] Received tuple: "
+            /*string states = "[ ";
+            for (const string& s : t->states)
+                states += s + " ";
+
+            cout << "[Sink] Received tuple: "
                  << t->entity_id << " - "
                  << t->score << " - "
-                 << t->states << ", "
+                 << states << "], "
                  << t->key << " - "
                  << t->id << " - "
                  << t->ts << endl;*/
@@ -76,9 +80,12 @@ public:
             }
             processed++;        // tuples counter
         } else {     // EOS
-            cout << "[Sink] processed tuples: " << processed
-                 << ", average latency: " << fixed << setprecision(3) << get_average_latency()// / 1000 << " ms" << endl;
-                 << " usecs" << endl;
+            if (processed != 0) {
+                cout << "[Sink] processed tuples: " << processed
+                     << ", average latency: " << fixed << setprecision(5)
+                     << get_average_latency()// / 1000 << " ms" << endl;
+                     << " usecs" << endl;
+            } else cout << "[Sink] processed tuples: " << processed << endl;
         }
     }
 };
