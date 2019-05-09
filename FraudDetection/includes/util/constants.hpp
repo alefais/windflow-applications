@@ -31,7 +31,7 @@ size_t _state_position = 1;
 detection_algorithm _alg = MISS_PROBABILITY;
 double _threshold = 0.96;
 
-const string _model_file = "/home/fais/data/app/fd/model.txt";
-const string _input_file = "/home/fais/data/app/fd/credit-card.dat";
+const string _model_file = "../data/model.txt";
+const string _input_file = "../data/credit-card.dat";
 
 #endif //FRAUDDETECTION_CONSTANTS_HPP

@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    04/05/2019
+ * @date    07/05/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -12,7 +12,9 @@
 #ifndef FRAUDDETECTION_CLI_UTIL_HPP
 #define FRAUDDETECTION_CLI_UTIL_HPP
 
+#include <iostream>
 #include <string>
+#include <vector>
 #include <getopt.h>
 
 using namespace std;
