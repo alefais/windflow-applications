@@ -1,26 +1,23 @@
-FF_ROOT			= $(HOME)/fastflow/
-OUT_DIR			= ./out
-INCLUDE_DIR		= $(HOME)/WindFlow/includes/
+# Author: Alessandra Fais
+# Date: 07/05/2019
 
-CXX 			= /usr/local/gcc-7.2.0/bin/g++
-CXXFLAGS		= -std=c++17
-MACRO           = -DFF_BOUNDED_BUFFER
-INCLUDES		= -I $(FF_ROOT) -I $(INCLUDE_DIR) -I .
-OPTFLAGS		= -g -O3 -finline-functions
-LDFLAGS			= -pthread
+all:
+	$(MAKE) -C src
 
-SRCS			:= $(wildcard *.cpp)
-TGTS			:= $(basename $(SRCS))
+test_light_source:
+	$(MAKE) test_light_source -C src
 
-all: $(TGTS)
+test_heavy_source:
+	$(MAKE) test_heavy_source -C src
 
-%: %.cpp
-	$(CXX) $(CXXFLAGS) $(MACRO) $(INCLUDES) $(OPTFLAGS) $(LDFLAGS) -o $(OUT_DIR)/$@ $<
+test_markov_model:
+	$(MAKE) test_markov_model -C src
+
+test_model_predictor:
+	$(MAKE) test_model_predictor -C src
 
 clean:
-	rm -f $(OUT_DIR)/*
+	$(MAKE) clean -C src
 
 .DEFAULT_GOAL := all
-.PHONY: all clean
-
-# /usr/local/gcc-7.2.0/bin/g++ -std=c++17 -I $HOME/fastflow -I $HOME/WindFlow/includes -I . -O3 -pthread -o main main.cpp
+.PHONY: all test_light_source test_heavy_source test_markov_model test_model_predictor clean
