@@ -1,15 +1,15 @@
 /**
  *  @file    test_markov_model.cpp
  *  @author  Alessandra Fais
- *  @date    05/05/2019
+ *  @date    07/05/2019
  *
  *  @brief test for Markov_Model class
  */
 
 #include <iostream>
 #include <ff/ff.hpp>
-#include "util/constants.hpp"
-#include "markov_model_prediction/markov_model.hpp"
+#include "../../includes/util/constants.hpp"
+#include "../../includes/markov_model_prediction/markov_model.hpp"
 
 using namespace std;
 

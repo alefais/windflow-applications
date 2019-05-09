@@ -4,6 +4,11 @@
  *  @date    07/05/2019
  *
  *  @brief main of the FraudDetection application
+ *
+ *  The source used in this version maps and parses the dataset
+ *  input file and then starts generating the stream. In this
+ *  case we're paying the overhead of doing some pre-processing
+ *  on the dataset in the source node.
  */
 
 #include <iostream>
@@ -11,10 +16,10 @@
 #include <ff/ff.hpp>
 #include <windflow.hpp>
 
-#include "util/cli_util.hpp"
-#include "nodes/heavy_source.hpp"
-#include "nodes/predictor.hpp"
-#include "nodes/sink.hpp"
+#include "../../includes/util/cli_util.hpp"
+#include "../../includes/nodes/heavy_source.hpp"
+#include "../../includes/nodes/predictor.hpp"
+#include "../../includes/nodes/sink.hpp"
 
 using namespace std;
 
@@ -117,7 +122,7 @@ int main(int argc, char* argv[]) {
     if (topology.run_and_wait_end() < 0)
         cerr << app_error << endl;
     else
-        cout << app_termination << topology.cardinality() << endl;
+        cout << app_termination << topology.getNumThreads() << endl;
 
     return 0;
 }

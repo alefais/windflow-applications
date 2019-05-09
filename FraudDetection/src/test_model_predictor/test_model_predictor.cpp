@@ -1,15 +1,15 @@
 /**
  *  @file    test_model_predictor.cpp
  *  @author  Alessandra Fais
- *  @date    05/05/2019
+ *  @date    07/05/2019
  *
  *  @brief test for Markov_Model_Predictor class
  */
 
 #include <iostream>
 #include <ff/ff.hpp>
-#include "util/constants.hpp"
-#include "markov_model_prediction/model_based_predictor.hpp"
+#include "../../includes/util/constants.hpp"
+#include "../../includes/markov_model_prediction/model_based_predictor.hpp"
 
 using namespace std;
 
