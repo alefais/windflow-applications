@@ -93,6 +93,7 @@ public:
     size_t get_index_of(const string& state) {
         size_t index = -1;
         for (size_t i = 0; i < num_states; i++) {
+            //cout << "states.at(" << i << ") = " << states.at(i) << " " << state << endl;
             if (states.at(i) == state) index = i;
         }
         return index;
