@@ -4,6 +4,11 @@
  *  @date    07/05/2019
  *
  *  @brief Source node that generates the input stream
+ *
+ *  This version of the source node maps and parses the dataset
+ *  input file and then starts generating the stream. In this
+ *  case we're paying the overhead of doing some pre-processing
+ *  on the dataset in the source node.
  */
 
 #ifndef FRAUDDETECTION_HEAVY_SOURCE_HPP

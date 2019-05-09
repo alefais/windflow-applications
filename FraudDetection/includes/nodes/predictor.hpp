@@ -1,7 +1,7 @@
 /**
  *  @file    predictor.hpp
  *  @author  Alessandra Fais
- *  @date    04/05/2019
+ *  @date    07/05/2019
  *
  *  @brief Node that implements outliers detection
  */
