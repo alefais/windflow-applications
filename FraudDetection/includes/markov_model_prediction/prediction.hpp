@@ -1,7 +1,7 @@
 /**
  *  @file    prediction.hpp
  *  @author  Alessandra Fais
- *  @date    04/05/2019
+ *  @date    11/05/2019
  *
  *  @brief Definition of the structure of objects of type Prediction
  */
@@ -23,7 +23,7 @@ class Prediction {
 private:
     string entity_id;
     double_t score;
-    vector<string> states;
+    string states;
     bool outlier;
 
 public:
@@ -31,7 +31,7 @@ public:
     /**
      *  @brief Constructor
      */
-    Prediction(string& _entity_id, double_t _score, vector<string>& _states, bool outlier):
+    Prediction(const string& _entity_id, double_t _score, const string& _states, bool outlier):
         entity_id(_entity_id), score(_score), states(_states), outlier(outlier) {}
 
     /// getter methods
@@ -43,7 +43,7 @@ public:
         return score;
     }
 
-    vector<string> get_states() {
+    string get_states() {
         return states;
     }
 
@@ -52,7 +52,7 @@ public:
     }
 
     /// setter methods
-    void set_entity(string& _entity_id) {
+    void set_entity(const string& _entity_id) {
         entity_id = _entity_id;
     }
 
@@ -60,7 +60,7 @@ public:
         score = _score;
     }
 
-    void set_states(vector<string>& _states) {
+    void set_states(const string& _states) {
         states = _states;
     }
 

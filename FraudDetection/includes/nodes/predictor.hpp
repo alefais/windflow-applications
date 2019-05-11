@@ -1,7 +1,7 @@
 /**
  *  @file    predictor.hpp
  *  @author  Alessandra Fais
- *  @date    07/05/2019
+ *  @date    11/05/2019
  *
  *  @brief Node that implements outliers detection
  */
@@ -34,6 +34,10 @@ private:
     unsigned long start_time;
     unsigned long current_time;
 
+    // runtime information
+    size_t parallelism;
+    size_t replica_id;
+
 public:
 
     /**
@@ -54,7 +58,11 @@ public:
      *  @param t input tuple
      *  @param shipper shipper object used for the delivery of results
      */
-    void operator()(const tuple_t& t, Shipper<result_t>& shipper) {
+    void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext rc) {
+        if (processed == 0) {
+            parallelism = rc.getParallelism();
+            replica_id = rc.getReplicaIndex();
+        }
         /*cout << "[Predictor] Received tuple: "
                  << t.entity_id << " - "
                  << t.record << ", "
@@ -87,13 +95,14 @@ public:
 
     ~Predictor_Functor() {
         if (processed != 0) {
-            cout << "[Predictor] execution time: " << (current_time - start_time) / 1000000L
+            cout << "[Predictor] replica " << replica_id << "/" << parallelism
+                 << ", execution time: " << (current_time - start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", outliers: " << outliers
                  << ", bandwidth: " << processed / ((current_time - start_time) / 1000000L)
                  << ", #keys: " << keys.size()
                  << endl;
-            /*     << "Received keys are: "
+                 /*<< ", keys: "
                  << endl;
             for (auto k : keys) {
                 cout << "key: " << k.first << " id: " << k.second << endl;

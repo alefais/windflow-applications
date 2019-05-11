@@ -1,7 +1,7 @@
 /**
  *  @file    sink.hpp
  *  @author  Alessandra Fais
- *  @date    04/05/2019
+ *  @date    11/05/2019
  *
  *  @brief Sink node that receives and prints the results
  */
@@ -61,17 +61,13 @@ public:
      */
     void operator()(optional<result_t>& t) {
         if (t) {
-            /*string states = "[ ";
-            for (const string& s : t->states)
-                states += s + " ";
-
             cout << "[Sink] Received tuple: "
                  << t->entity_id << " - "
-                 << t->score << " - "
-                 << states << "], "
+                 << t->score << " - [ "
+                 << t->states << "], "
                  << t->key << " - "
                  << t->id << " - "
-                 << t->ts << endl;*/
+                 << t->ts << endl;
 
             // evaluate tuple latency
             if (rate != -1) {

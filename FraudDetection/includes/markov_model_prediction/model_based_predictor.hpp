@@ -1,7 +1,7 @@
 /**
  *  @file    model_based_predictor.hpp
  *  @author  Alessandra Fais
- *  @date    06/05/2019
+ *  @date    11/05/2019
  *
  *  @brief Definition of the model based predictor
  */
@@ -57,14 +57,12 @@ private:
         params[1] = 0;
 
         // print states window
-        //print_window(states_sequence);     TODO test
+        //print_window(states_sequence);
 
         if (alg == MISS_PROBABILITY)
             miss_probability(states_sequence, params);
         else if (alg == MISS_RATE || alg == ENTROPY_REDUCTION)
             miss_rate_OR_entropy_reduction(states_sequence, params);
-
-        //cout << "Params values are: " << params[0] << ", " << params[1] << endl;     TODO test
 
         return (params[0] / params[1]);
     }
@@ -81,7 +79,7 @@ private:
             size_t cur_state_idx = markov_model.get_index_of(states_sequence.at(i));
 
             // print indexes used to access the one step probability matrix
-            //print_prob_indexes(states_sequence.at(i - 1), states_sequence.at(i), prev_state_idx, cur_state_idx);     TODO test
+            //print_prob_indexes(states_sequence.at(i - 1), states_sequence.at(i), prev_state_idx, cur_state_idx);
 
             for (int j = 0; j < markov_model.get_num_states(); j++) {
                 if (j != cur_state_idx) {
@@ -104,7 +102,7 @@ private:
             size_t cur_state_idx = markov_model.get_index_of(states_sequence.at(i));
 
             // print indexes used to access the one step probability matrix
-            //print_prob_indexes(states_sequence.at(i - 1), states_sequence.at(i), prev_state_idx, cur_state_idx);     TODO test
+            //print_prob_indexes(states_sequence.at(i - 1), states_sequence.at(i), prev_state_idx, cur_state_idx);
 
             params[0] += (cur_state_idx == max_state_prob_idx[prev_state_idx]) ? 0 : 1;
             params[1] += 1;
@@ -124,7 +122,7 @@ public:
         threshold(_threshold)
     {
         // print model state
-        //print_model_parameters(_model_file, records_win_size, state_position, alg, threshold);     TODO test
+        //print_model_parameters(_model_file, records_win_size, state_position, alg, threshold);
 
         mm_num_states = markov_model.get_num_states();
 
@@ -142,7 +140,7 @@ public:
                     }
                 }
                 // save for each state i the state j s.t. the probability H[i, j] of going from i to j at the
-                // next step is the higher between all probabilities to move from i (evaluates the max value
+                // next step is the higher between all probabilities of moving from i (find the maximum value
                 // contained in row i of the one step transition probability matrix)
                 max_state_prob_idx[i] = max_prob_idx;
             }
@@ -199,9 +197,14 @@ public:
             score = get_local_metric(states_sequence);
         }
 
-        Prediction prediction(entity_id, score, states_sequence, (score > threshold));
-        if (score > threshold)  // outlier
-            //print_fraudolent_sequence(states_sequence, score, threshold);     TODO test
+        // create a string representation of the sequence of states
+        string states;
+        for (const string& s : states_sequence)
+            states += s + " ";
+
+        Prediction prediction(entity_id, score, states, (score > threshold));
+        //if (score > threshold)  // outlier
+        //    print_fraudolent_sequence(states_sequence, score, threshold);
 
         return prediction;
     }
