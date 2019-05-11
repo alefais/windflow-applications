@@ -1,7 +1,7 @@
 /**
  *  @file    heavy_source.hpp
  *  @author  Alessandra Fais
- *  @date    07/05/2019
+ *  @date    11/05/2019
  *
  *  @brief Source node that generates the input stream
  *
@@ -145,7 +145,7 @@ public:
         next_tuple_idx = (next_tuple_idx + 1) % parsed_file.size();   // index of the next tuple to be sent (if any)
 
         // EOS reached
-        if (current_time - app_start_time >= app_run_time && next_tuple_idx == 0) {
+        if (current_time - start_time >= app_run_time && next_tuple_idx == 0) {
             cout << "[Source] execution time: " << (current_time - start_time) / 1000000L
                  << " s, generations: " << generations
                  << ", generated: " << generated_tuples

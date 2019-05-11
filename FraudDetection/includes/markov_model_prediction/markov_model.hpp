@@ -1,7 +1,7 @@
 /**
  *  @file    markov_model.hpp
  *  @author  Alessandra Fais
- *  @date    05/05/2019
+ *  @date    11/05/2019
  *
  *  @brief Definition of the Markov model used by the predictor
  */
@@ -93,7 +93,6 @@ public:
     size_t get_index_of(const string& state) {
         size_t index = -1;
         for (size_t i = 0; i < num_states; i++) {
-            //cout << "states.at(" << i << ") = " << states.at(i) << " " << state << endl;
             if (states.at(i) == state) index = i;
         }
         return index;

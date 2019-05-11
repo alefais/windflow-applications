@@ -1,7 +1,7 @@
 /**
  *  @file    light_source.hpp
  *  @author  Alessandra Fais
- *  @date    07/05/2019
+ *  @date    11/05/2019
  *
  *  @brief Source node that generates the input stream
  *
@@ -73,7 +73,6 @@ public:
                    generated_tuples(0)
     {
         dataset = _dataset;
-        //cout << "[Light Source] dataset size " << dataset.size() << endl;
 
         // initialize time variables
         interval = 1000000L; // 1 second (microseconds)
@@ -92,17 +91,20 @@ public:
         generated_tuples++;                             // tuples counter
 
         // put a timestamp and send the tuple
-        t = dataset.at(next_tuple_idx);
+        tuple_t tuple = dataset.at(next_tuple_idx);
+        t.entity_id = tuple.entity_id;
+        t.record = tuple.record;
+        t.key = tuple.key;
+        t.id = tuple.id;
         t.ts = current_time - app_start_time;
 
         if (rate != -1) // stream generation rate is fixed
             active_delay(interval / rate);
 
         next_tuple_idx = (next_tuple_idx + 1) % dataset.size();   // index of the next tuple to be sent (if any)
-        //cout << "[Light Source] next tuple idx " << next_tuple_idx << endl;
 
         // EOS reached
-        if (current_time - app_start_time >= app_run_time && next_tuple_idx == 0) {
+        if (current_time - start_time >= app_run_time && next_tuple_idx == 0) {
             cout << "[Source] execution time: " << (current_time - start_time) / 1000000L
                  << " s, generations: " << generations
                  << ", generated: " << generated_tuples

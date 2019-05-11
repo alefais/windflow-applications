@@ -78,7 +78,6 @@ void create_tuples() {
         t.id = ((entity_key_map.find(t.entity_id))->second).second++;
         t.ts = 0L;
         dataset.insert(dataset.end(), t);
-        //cout << "Create tuple " << next_tuple_idx << ": " << t.entity_id << " " << t.record << " " << t.key << " " << t.id << endl;
     }
 }
 
@@ -151,7 +150,6 @@ int main(int argc, char* argv[]) {
     /// data pre-processing
     map_and_parse_dataset(file_path, ",");
     create_tuples();
-    //cout << "keys " << entity_key_map.size() << " parsed_file " << parsed_file.size() << " dataset " << dataset.size() << endl;
 
     /// application starting time
     unsigned long app_start_time = current_time_usecs();
@@ -160,7 +158,7 @@ int main(int argc, char* argv[]) {
     Source_Functor source_functor(dataset, rate, app_start_time);
     Source source = Source_Builder(source_functor)
             .withParallelism(source_par_deg)
-            .withName(heavy_source_name)
+            .withName(light_source_name)
             .build();
 
     Predictor_Functor predictor_functor;

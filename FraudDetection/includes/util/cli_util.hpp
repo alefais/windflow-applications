@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    07/05/2019
+ * @date    11/05/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -68,6 +68,7 @@ inline void print_app_descr(string f, size_t source, size_t pred, size_t sink, i
          << rate_str << rate << endl;
 }
 
+// information about the model (testing)
 inline void print_model_parameters(const string& _model_file, size_t records_win_size, size_t state_position, int alg, double threshold) {
     cout << "Model parameters are: "
          << " file " << _model_file << endl
