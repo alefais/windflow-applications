@@ -61,13 +61,13 @@ public:
      */
     void operator()(optional<result_t>& t) {
         if (t) {
-            cout << "[Sink] Received tuple: "
+            /*cout << "[Sink] Received tuple: "
                  << t->entity_id << " - "
                  << t->score << " - [ "
                  << t->states << "], "
                  << t->key << " - "
                  << t->id << " - "
-                 << t->ts << endl;
+                 << t->ts << endl;*/
 
             // evaluate tuple latency
             if (rate != -1) {
