@@ -95,7 +95,7 @@ public:
 
     ~Predictor_Functor() {
         if (processed != 0) {
-            cout << "[Predictor] replica " << replica_id << "/" << parallelism
+            cout << "[Predictor] replica " << replica_id + 1 << "/" << parallelism
                  << ", execution time: " << (current_time - start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", outliers: " << outliers
