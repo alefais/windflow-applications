@@ -9,8 +9,8 @@
  *  reading the tuples from memory.
  */
 
-#ifndef FRAUDDETECTION_HEAVY_SOURCE_HPP
-#define FRAUDDETECTION_HEAVY_SOURCE_HPP
+#ifndef FRAUDDETECTION_LIGHT_SOURCE_HPP
+#define FRAUDDETECTION_LIGHT_SOURCE_HPP
 
 #include <fstream>
 #include <vector>
@@ -118,4 +118,4 @@ public:
     ~Source_Functor() {}
 };
 
-#endif //FRAUDDETECTION_HEAVY_SOURCE_HPP
+#endif //FRAUDDETECTION_LIGHT_SOURCE_HPP
