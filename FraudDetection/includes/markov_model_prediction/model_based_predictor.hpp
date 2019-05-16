@@ -1,7 +1,7 @@
 /**
  *  @file    model_based_predictor.hpp
  *  @author  Alessandra Fais
- *  @date    11/05/2019
+ *  @date    16/05/2019
  *
  *  @brief Definition of the model based predictor
  */
@@ -172,15 +172,14 @@ public:
     Prediction execute(string entity_id, string record, string split_regex) {
         double score = 0;
 
-        if (records.find(entity_id) == records.end()) {
+        if (records.find(entity_id) == records.end())
             records.insert(make_pair(entity_id, deque<string>()));
-        }
-        (records.find(entity_id)->second).insert((records.find(entity_id)->second).end(), record);
+
+        records.at(entity_id).push_back(record);
 
         // control the window size (number of records stored) for each entity_id
-        if ((records.find(entity_id)->second).size() > records_win_size) {
-            (records.find(entity_id)->second).pop_front();
-        }
+        if (records.at(entity_id).size() > records_win_size)
+            records.at(entity_id).pop_front();
 
         // if the window can be closed (it's size is equal to records_win_size) evaluate the score related
         // to the sequence of states extracted from the records in the window; compute the score using the
@@ -188,7 +187,7 @@ public:
         // detected and the sequence of states (bank transaction types) identifies a fraudolent activity
         vector<string> states_sequence;
         if ((records.find(entity_id)->second).size() == records_win_size) {
-            for (string r : records.find(entity_id)->second) {  // read the sequence of states from the records in the window
+            for (const string& r : records.at(entity_id)) {  // read the sequence of states from the records in the window
                 if (state_position == 0)
                     states_sequence.insert(states_sequence.end(), r.substr(0, r.find(split_regex)));
                 else if (state_position == 1)
