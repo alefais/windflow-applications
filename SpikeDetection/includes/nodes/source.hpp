@@ -1,7 +1,7 @@
 /**
  *  @file    source.hpp
  *  @author  Alessandra Fais
- *  @date    14/05/2019
+ *  @date    16/05/2019
  *
  *  @brief Source node that generates the input stream
  *
@@ -97,12 +97,7 @@ public:
         t.id = tuple.id;
         t.ts = current_time - app_start_time;
 
-        /*cout << "[Source] tuple content: "
-             << t.property_value << " - "
-             << t.incremental_average << ", "
-             << t.key << " - "
-             << t.id << " - "
-             << t.ts << endl;*/
+        //print_tuple("[Source] tuple content: ", t);
 
         if (rate != -1) // stream generation rate is fixed
             active_delay(interval / rate);
