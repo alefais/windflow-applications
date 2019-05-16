@@ -1,7 +1,7 @@
 /**
  *  @file    main_heavy_source.cpp
  *  @author  Alessandra Fais
- *  @date    07/05/2019
+ *  @date    16/05/2019
  *
  *  @brief main of the FraudDetection application
  *
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
     FlatMap predictor = FlatMap_Builder(predictor_functor)
             .withParallelism(predictor_par_deg)
             .withName(predictor_name)
-            .keyBy()
+            .enable_KeyBy()
             .build();
 
     Sink_Functor sink_functor(rate, app_start_time);
