@@ -1,7 +1,7 @@
 /**
  *  @file    result.hpp
  *  @author  Alessandra Fais
- *  @date    11/05/2019
+ *  @date    16/05/2019
  *
  *  @brief Structure of a tuple result of the FlatMap
  *
