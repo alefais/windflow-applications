@@ -64,12 +64,7 @@ public:
             parallelism = rc.getParallelism();
             replica_id = rc.getReplicaIndex();
         }
-        /*cout << "[Predictor] Received tuple: "
-                 << t.entity_id << " - "
-                 << t.record << ", "
-                 << t.key << " - "
-                 << t.id << " - "
-                 << t.ts << endl;*/
+        //print_tuple("[Predictor] Received tuple: ", t);
 
         Prediction prediction_object = predictor.execute(t.entity_id, t.record, ",");
         if (prediction_object.is_outlier()) {
@@ -89,7 +84,7 @@ public:
         if (keys.find(t.key) == keys.end())
             keys.insert(make_pair(t.key, t.id));
         else
-            (keys.find(t.key))->second = t.id;
+            keys.at(t.key) = t.id;
 
         current_time = current_time_usecs();
     }
@@ -103,7 +98,9 @@ public:
                  << ", bandwidth: " << processed / ((current_time - start_time) / 1000000L)
                  << ", #keys: " << keys.size()
                  << endl;
-                 /*<< ", keys: "
+
+            // print received keys and number of occurrences
+            /*     << ", keys: "
                  << endl;
             for (auto k : keys) {
                 cout << "key: " << k.first << " id: " << k.second << endl;
