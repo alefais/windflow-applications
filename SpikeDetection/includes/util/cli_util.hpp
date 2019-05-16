@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    14/05/2019
+ * @date    16/05/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -16,8 +16,11 @@
 #include <string>
 #include <vector>
 #include <getopt.h>
+#include "constants.hpp"
+#include "tuple.hpp"
 
 using namespace std;
+using record_t = tuple<string, string, int, int, double, double, double, double>;
 
 typedef enum { NONE, REQUIRED } opt_arg;    // an option can require one argument or none
 
@@ -69,6 +72,48 @@ inline void print_app_descr(string f, size_t source, size_t avg_calc, size_t det
          << detector_str << detector << endl
          << sink_str << sink << endl
          << rate_str << rate << endl;
+}
+
+// information about parsed data (testing)
+inline void print_parsing_info(const vector<record_t>& parsed_file, size_t all_records, size_t incomplete_records) {
+    cout << "[main] parsed " << all_records << " records ("
+         << incomplete_records << " incomplete, "
+         << all_records - incomplete_records << " valid)" << endl;
+    for (auto r : parsed_file)
+        cout << get<DEVICE_ID_FIELD>(r) << " - "
+             << get<TEMP_FIELD>(r) << " - "
+             << get<HUMID_FIELD>(r) << " - "
+             << get<LIGHT_FIELD>(r) << " - "
+             << get<VOLT_FIELD>(r) << endl;
+}
+
+// information about dataset (testing)
+inline void print_dataset(const vector<tuple_t>& dataset) {
+    cout << "[main] dataset size: " << dataset.size() << endl;
+    for (auto t : dataset)
+        cout << t.property_value << " - "
+             << t.incremental_average << " - "
+             << t.key << " - "
+             << t.id << " - "
+             << t.ts << endl;
+}
+
+// information about windows (testing)
+inline void print_window(const deque<double>& win) {
+    cout << "[AverageCalculator] values in window [";
+    for (double t : win)
+        cout << t << " ";
+    cout << "]" << endl;
+}
+
+// information about tuple content (testing)
+inline void print_tuple(const string& msg, const tuple_t& t) {
+    cout << msg
+         << t.property_value << " - "
+         << t.incremental_average << ", "
+         << t.key << " - "
+         << t.id << " - "
+         << t.ts << endl;
 }
 
 #endif //SPIKEDETECTION_CLI_UTIL_HPP
