@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    11/05/2019
+ * @date    16/05/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -16,6 +16,8 @@
 #include <string>
 #include <vector>
 #include <getopt.h>
+#include "tuple.hpp"
+#include "result.hpp"
 
 using namespace std;
 
@@ -96,6 +98,26 @@ inline void print_fraudolent_sequence(const vector<string>& states_sequence, dou
         cout << s << " ";
     }
     cout << endl << "Score: " << score << " Threshold: " << threshold << endl;
+}
+
+// information about tuple and result content (testing)
+inline void print_tuple(const string& msg, const tuple_t& t) {
+    cout << msg
+         << t.entity_id << " - "
+         << t.record << ", "
+         << t.key << " - "
+         << t.id << " - "
+         << t.ts << endl;
+}
+
+inline void print_result(const string& msg, const result_t& t) {
+    cout << msg
+         << t.entity_id << " - "
+         << t.score << " - [ "
+         << t.states << "], "
+         << t.key << " - "
+         << t.id << " - "
+         << t.ts << endl;
 }
 
 #endif //FRAUDDETECTION_CLI_UTIL_HPP
