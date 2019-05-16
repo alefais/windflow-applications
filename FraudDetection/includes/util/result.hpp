@@ -33,18 +33,19 @@ struct result_t {
     result_t(const string& _entity_id, double_t _score, const string& _states, size_t _key, uint64_t _id, uint64_t _ts) :
             entity_id(_entity_id), score(_score), states(_states), key(_key), id(_id), ts(_ts) {}
 
-    // getInfo method
-    tuple<size_t, uint64_t, uint64_t> getInfo() const {
+	// getControlFields method
+    tuple<size_t, uint64_t, uint64_t> getControlFields() const {
         return tuple<size_t, uint64_t, uint64_t>(key, id, ts);
     }
 
-    // setInfo method
-    void setInfo(size_t _key, uint64_t _id, uint64_t _ts) {
+	// setControlFields method
+    void setControlFields(size_t _key, uint64_t _id, uint64_t _ts) {
         key = _key;
         id = _id;
         ts = _ts;
     }
 
+    // destructor
     ~result_t() {}
 };
 
