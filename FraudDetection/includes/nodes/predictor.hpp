@@ -1,7 +1,7 @@
 /**
  *  @file    predictor.hpp
  *  @author  Alessandra Fais
- *  @date    11/05/2019
+ *  @date    16/05/2019
  *
  *  @brief Node that implements outliers detection
  */
@@ -57,6 +57,7 @@ public:
      *  which an outlier has been identified are sent out.
      *  @param t input tuple
      *  @param shipper shipper object used for the delivery of results
+     *  @param rc runtime context used to access to the parallelism degree and replica index
      */
     void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext rc) {
         if (processed == 0) {
