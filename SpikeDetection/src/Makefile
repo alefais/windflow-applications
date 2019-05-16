@@ -1,13 +1,20 @@
 # Author: Alessandra Fais
-# Date: 10/05/2019
+# Date: 16/05/2019
 
-all: test_main
+all: test_main_map test_main_keyfarm test_average_calculator
 
-test_main:
-	$(MAKE) -C test_main
+test_main_map:
+	$(MAKE) -C test_main_map
+
+test_main_keyfarm:
+	$(MAKE) -C test_main_keyfarm
+
+test_average_calculator:
+	$(MAKE) -C test_average_calculator
 
 clean:
 	$(MAKE) clean -C test_main
+	$(MAKE) clean -C test_average_calculator
 
 .DEFAULT_GOAL := all
-.PHONY: all test_main clean
+.PHONY: all test_main_map test_main_keyfarm test_average_calculator clean
