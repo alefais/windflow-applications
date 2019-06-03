@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    16/05/2019
+ * @date    03/06/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -61,13 +61,20 @@ inline void print_help(char* arg) {
          << run_help << endl;
 }
 
-inline void print_app_descr(string f, size_t source, size_t pred, size_t sink, int rate) {
+inline void print_app_descr(const string& f, size_t source, size_t pred, size_t sink, int rate) {
     cout << app_descr << endl
          << file_str << f << endl
          << source_str << source << endl
          << predictor_str << pred << endl
          << sink_str << sink << endl
          << rate_str << rate << endl;
+}
+
+inline void print_summary(const atomic<long>& sent_tuples, double elapsed_time_seconds, double tot_average_latency) {
+    cout << "[SUMMARY] generated " << sent_tuples << endl;
+    cout << "[SUMMARY] elapsed time (seconds) " << elapsed_time_seconds << endl;
+    cout << "[SUMMARY] bandwidth (tuples/second) " << sent_tuples / elapsed_time_seconds << endl;
+    cout << "[SUMMARY] average latency (useconds) " << tot_average_latency << endl;
 }
 
 // information about the model (testing)
