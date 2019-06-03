@@ -1,7 +1,7 @@
 /**
  *  @file    heavy_source.hpp
  *  @author  Alessandra Fais
- *  @date    11/05/2019
+ *  @date    03/06/2019
  *
  *  @brief Source node that generates the input stream
  *
@@ -24,6 +24,8 @@ using namespace ff;
 using namespace std;
 using count_key_t = pair<size_t, uint64_t>;
 using key_map_t = unordered_map<string, count_key_t>;
+
+extern atomic<long> sent_tuples;
 
 /**
  *  @class Source_Functor
@@ -146,11 +148,13 @@ public:
 
         // EOS reached
         if (current_time - start_time >= app_run_time && next_tuple_idx == 0) {
-            cout << "[Source] execution time: " << (current_time - start_time) / 1000000L
+            /*cout << "[Source] execution time: " << (current_time - start_time) / 1000000L
                  << " s, generations: " << generations
                  << ", generated: " << generated_tuples
                  << ", bandwidth: " << generated_tuples / ((current_time - start_time) / 1000000L)
-                 << " tuples/s" << endl;
+                 << " tuples/s" << endl;*/
+
+            sent_tuples.fetch_add(generated_tuples);
             return false;
         }
         return true;         // stream not ended yet
