@@ -233,7 +233,7 @@ int main(int argc, char* argv[]) {
     MultiPipe topology(topology_name);
     topology.add_source(source);
     topology.add(average_calculator);
-    topology.chain(detector);
+    topology.chain(detector);     // in order to exploit chaining, average calculator, detector and sink must have the same parallelism degree
     topology.chain_sink(sink);
 
     /// evaluate topology execution time
