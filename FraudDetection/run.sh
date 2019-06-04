@@ -1,68 +1,45 @@
 #!/usr/bin/env bash
 
-# WindFlow tests bandwidth
+# @author   Alessandra Fais
+# @date     04/06/2019
 
-#################################################################### UNBOUNDED BUFFER ####################################################################
+############################################## create test directories #################################################
 
-# tests using the "heavy" source (max 16 PE - all physic cores)
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 1 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_111-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 2 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_121-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_141-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_181-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 14 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_1141-1.log
+if [ ! -d tests ]; then
+    mkdir tests
+fi
+if [ ! -d tests/output_fd60s_light_bounded ]; then
+    mkdir tests/output_fd60s_light_bounded
+fi
 
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_241-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_281-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 13 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_2131-1.log
+#################################################### run tests #########################################################
 
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_481-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 11 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_4111-1.log
-./main_heavy_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 5 --npredictor 10 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_unbounded/main_5101-1.log
+cd bin
 
-# tests using the "light" source (max 16 PE - all physic cores)
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 1 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_111-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 2 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_121-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_141-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_181-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 14 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_1141-1.log
+printf "Running tests light source bounded buffer\n"
 
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_241-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_281-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 13 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_2131-1.log
+NSOURCE_MAX=4
+NPRED_MAX=12
+for nsource in $(seq 1 $NSOURCE_MAX);
+do
+    for npred in $(seq 1 $NPRED_MAX);
+    do
+        ./main_light_source --file ~/data/app/fd/credit-card.dat --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_fd60s_light_bounded/main_$nsource$npred-1.log
+    done
+done
 
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_481-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 11 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_4111-1.log
-./main_light_source_unbounded --file ~/data/app/fd/credit-card.dat --nsource 5 --npredictor 10 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_unbounded/main_5101-1.log
+############################################### extract results ########################################################
 
-#################################################################### BOUNDED BUFFER ####################################################################
+printf "Extracting bandwidth and latency values\n"
 
-# tests using the "heavy" source (max 16 PE - all physic cores)
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 1 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_111-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 2 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_121-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_141-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_181-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 14 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_1141-1.log
+#for filename in tests/output_fd60s_light_bounded/*.log; do
+#    if [ ! -e "$filename" ]; then continue; fi
+#    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' | tee tests/output_fd60s_light_bounded/$(basename "$filename" .log)_bw.txt
+#	grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' | tee tests/output_fd60s_light_bounded/$(basename "$filename" .log)_latency.txt
+#done
 
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_241-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_281-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 13 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_2131-1.log
-
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_481-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 11 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_4111-1.log
-./main_heavy_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 5 --npredictor 10 --nsink 1 --rate -1 | tee ../tests/output_fd60s_heavy_bounded/main_5101-1.log
-
-# tests using the "light" source (max 16 PE - all physic cores)
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 1 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_111-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 2 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_121-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_141-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_181-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 1 --npredictor 14 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_1141-1.log
-
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 4 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_241-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_281-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 2 --npredictor 13 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_2131-1.log
-
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 8 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_481-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 4 --npredictor 11 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_4111-1.log
-./main_light_source_bounded --file ~/data/app/fd/credit-card.dat --nsource 5 --npredictor 10 --nsink 1 --rate -1 | tee ../tests/output_fd60s_light_bounded/main_5101-1.log
-
+for filename in tests/output_fd60s_light_bounded/*.log; do
+    if [ ! -e "$filename" ]; then continue; fi
+    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' >> tests/output_fd60s_light_bounded/bandwidth.txt
+	grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' >> tests/output_fd60s_light_bounded/latency.txt
+done
