@@ -1,7 +1,7 @@
 /**
  *  @file    sink.hpp
  *  @author  Alessandra Fais
- *  @date    16/05/2019
+ *  @date    04/06/2019
  *
  *  @brief Sink node that receives and prints the results
  */
@@ -11,8 +11,12 @@
 
 #include <iomanip>
 #include <ff/ff.hpp>
+#include "../../includes/util/atomic_double.hpp"
 #include "../util/cli_util.hpp"
 #include "../util/tuple.hpp"
+
+extern Atomic_Double average_latency_sum;
+extern atomic<int> sink_zero_processed;
 
 /**
  *  @class Sink_Functor
@@ -33,7 +37,7 @@ private:
      * @return average latency
      */
     double get_average_latency() {
-        if (rate == -1) return 0.0;
+        //if (rate == -1) return 0.0; // always evaluate latency with FF_BOUNDED_BUFFER set
         unsigned long acc = 0L;
         for (long tl : tuple_latencies) {
             acc += tl;
@@ -64,19 +68,27 @@ public:
         if (t) {
             //print_tuple("[Sink] received tuple: ", *t);
 
-            // evaluate tuple latency
-            if (rate != -1) {
-                unsigned long tuple_latency = current_time_usecs() - (app_start_time + (*t).ts);
-                tuple_latencies.insert(tuple_latencies.end(), tuple_latency);
-            }
+            // evaluate tuple latency (always evaluate latency with FF_BOUNDED_BUFFER set)
+            //if (rate != -1) {
+
+            unsigned long tuple_latency = current_time_usecs() - (app_start_time + (*t).ts);
+            tuple_latencies.insert(tuple_latencies.end(), tuple_latency);
+
+            //}
             processed++;        // tuples counter
         } else {     // EOS
             if (processed != 0) {
-                cout << "[Sink] processed tuples: " << processed
+                /*cout << "[Sink] processed tuples: " << processed
                      << ", average latency: " << fixed << setprecision(5)
                      << get_average_latency()// / 1000 << " ms" << endl;
-                     << " usecs" << endl;
-            } else cout << "[Sink] processed tuples: " << processed << endl;
+                     << " usecs" << endl;*/
+
+                average_latency_sum.fetch_add(get_average_latency()); // add average latency value (useconds)
+            } else {
+                //cout << "[Sink] processed tuples: " << processed << endl;
+
+                sink_zero_processed.fetch_add(1);
+            }
         }
     }
 };

@@ -1,7 +1,7 @@
 /**
  *  @file    main_map.cpp
  *  @author  Alessandra Fais
- *  @date    16/05/2019
+ *  @date    04/06/2019
  *
  *  @brief main of the SpikeDetection application
  */
@@ -15,6 +15,7 @@
 #include <windflow.hpp>
 
 #include "../../includes/util/cli_util.hpp"
+#include "../../includes/util/atomic_double.hpp"
 #include "../../includes/util/constants.hpp"
 #include "../../includes/util/tuple.hpp"
 #include "../../includes/nodes/source.hpp"
@@ -30,6 +31,9 @@ using record_t = tuple<string, string, int, int, double, double, double, double>
 vector<record_t> parsed_file;               // contains data extracted from the input file
 vector<tuple_t> dataset;                    // contains all the tuples in memory
 unordered_map<size_t, uint64_t> key_occ;    // contains the number of occurrences of each key device_id
+atomic<long> sent_tuples;                   // total number of tuples sent by all the sources
+Atomic_Double average_latency_sum;          // sum of the average latency values measured in each of the sink's replicas
+atomic<int> sink_zero_processed;            // number of sink's replicas that processed zero tuples
 
 /**
  *  @brief Parse the input file
@@ -129,6 +133,7 @@ int main(int argc, char* argv[]) {
     size_t detector_par_deg = 0;
     size_t sink_par_deg = 0;
     int rate = 0;
+    sent_tuples = 0;
 
     /* Program options:
      * - case (argc == 13):
@@ -228,12 +233,23 @@ int main(int argc, char* argv[]) {
     MultiPipe topology(topology_name);
     topology.add_source(source);
     topology.add(average_calculator);
-    topology.add(detector);
-    topology.add_sink(sink);
+    topology.chain(detector);
+    topology.chain_sink(sink);
+
+    /// evaluate topology execution time
+    volatile unsigned long start_time_main_usecs = current_time_usecs();
     if (topology.run_and_wait_end() < 0)
         cerr << app_error << endl;
     else
-        cout << app_termination << topology.cardinality() << endl;
+        cout << app_termination << topology.getNumThreads() << endl;
+    volatile unsigned long end_time_main_usecs = current_time_usecs();
+    double elapsed_time_seconds = (end_time_main_usecs - start_time_main_usecs) / (1000000.0);
+
+    /// evaluate average latency value (average time required by the tuples to traverse the whole system)
+    double tot_average_latency = average_latency_sum.get() / (sink_par_deg - sink_zero_processed);
+
+    /// print application results summary (run with FF_BOUNDED_BUFFER set)
+    print_summary(sent_tuples, elapsed_time_seconds, tot_average_latency);
 
     return 0;
 }
