@@ -1,5 +1,5 @@
 # Author: Alessandra Fais
-# Date: 16/05/2019
+# Date: 04/06/2019
 
 FF_ROOT			= $(HOME)/fastflow/
 WF_INCLUDES		= $(HOME)/WindFlow/includes/
@@ -9,7 +9,7 @@ OUT_DIR			= ../../bin
 CXX 			= /usr/local/gcc-7.2.0/bin/g++
 CXXFLAGS		= -std=c++17
 INCLUDES		= -I $(FF_ROOT) -I $(WF_INCLUDES) -I $(INCLUDE_DIR) -I .
-MACRO           = #-DFF_BOUNDED_BUFFER
+MACRO           = -DFF_BOUNDED_BUFFER
 OPTFLAGS		= -g -O3 -finline-functions
 LDFLAGS			= -pthread
 
