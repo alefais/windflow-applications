@@ -18,13 +18,18 @@ cd bin
 
 printf "Running tests light source bounded buffer\n"
 
-NSOURCE_MAX=4
-NPRED_MAX=12
+NCORES=16
+NTHREADS=32
+
+NSOURCE_MAX=16
 for nsource in $(seq 1 $NSOURCE_MAX);
 do
+    NPRED_MAX=$((NTHREADS-nsource))
     for npred in $(seq 1 $NPRED_MAX);
     do
-        ./main_light_source --file ~/data/app/fd/credit-card.dat --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_fd60s_light_bounded/main_$nsource$npred-1.log
+        printf "\ntest_light_source --nsource $nsource --npred $npred --nsink $npred\n\n"
+
+        ./main_light_source --file ~/data/app/fd/credit-card.dat --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_fd60s_light_bounded/main_$nsource_$npred.log
     done
 done
 
