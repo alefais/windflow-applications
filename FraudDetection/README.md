@@ -19,4 +19,6 @@ FraudDetection application can be run passing some arguments:<ul><li>`--file` pa
 
 <b>NB:</b> Running the application as `./main_heavy_source --help` or as `./main_light_source --help` visualizes all the parameter options.
 
-<b>NB:</b> It is possible to set `FF_BOUNDED_BUFFER` macro in the provided Makefile in order to use bounded queues instead of the default unbounded ones.
+<b>NB:</b> It is possible to set `FF_BOUNDED_BUFFER` FastFlow macro in the provided Makefile in order to use bounded queues instead of the default unbounded ones.
+
+<b>NB:</b> The current implementation exploits the chaining of the operators supported by WindFlow. Chaining can be performed only if the operators have the same parallelism degree, in which case the chained operators will be executed within the same thread. In the FraudDetection topology <strong>predictor</strong> and <strong>sink</strong> are chained together if it is possible (if they have the same parallelism degree).
