@@ -1,7 +1,7 @@
 /**
  *  @file    predictor.hpp
  *  @author  Alessandra Fais
- *  @date    16/05/2019
+ *  @date    05/06/2019
  *
  *  @brief Node that implements outliers detection
  */
@@ -90,14 +90,14 @@ public:
     }
 
     ~Predictor_Functor() {
-        if (processed != 0) {
-            cout << "[Predictor] replica " << replica_id + 1 << "/" << parallelism
+        //if (processed != 0) {
+            /*cout << "[Predictor] replica " << replica_id + 1 << "/" << parallelism
                  << ", execution time: " << (current_time - start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", outliers: " << outliers
                  << ", bandwidth: " << processed / ((current_time - start_time) / 1000000L)
                  << ", #keys: " << keys.size()
-                 << endl;
+                 << endl;*/
 
             // print received keys and number of occurrences
             /*     << ", keys: "
@@ -105,7 +105,7 @@ public:
             for (auto k : keys) {
                 cout << "key: " << k.first << " id: " << k.second << endl;
             }*/
-        }
+        //}
     }
 };
 
