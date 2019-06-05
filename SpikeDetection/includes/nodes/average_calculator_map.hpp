@@ -1,7 +1,7 @@
 /**
  *  @file    average_calculator_map.hpp
  *  @author  Alessandra Fais
- *  @date    16/05/2019
+ *  @date    05/06/2019
  *
  *  @brief Node that implements incremental mean value calculation
  */
@@ -131,19 +131,21 @@ public:
     }
 
     ~Average_Calculator_Map_Functor() {
-        if (processed != 0) {
-            cout << "[AverageCalculator] replica " << replica_id + 1 << "/" << parallelism
+        //if (processed != 0) {
+            /*cout << "[AverageCalculator] replica " << replica_id + 1 << "/" << parallelism
                  << ", execution time: " << (current_time - start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", bandwidth: " << processed / ((current_time - start_time) / 1000000L)
                  << ", #keys: " << keys.size()
-                 << endl;
+                 << endl;*/
+
+            // print received keys and number of occurrences
             /*     << ", keys: "
                  << endl;
             for (auto k : keys) {
                cout << "key: " << k.first << " id: " << k.second << endl;
             }*/
-        }
+        //}
     }
 };
 

@@ -1,7 +1,7 @@
 /**
  *  @file    detector.hpp
  *  @author  Alessandra Fais
- *  @date    16/05/2019
+ *  @date    05/06/2019
  *
  *  @brief Node that implements spike detection
  */
@@ -68,14 +68,14 @@ public:
     }
 
     ~Detector_Functor() {
-        if (processed != 0) {
+        /*if (processed != 0) {
             cout << "[Detector] replica " << replica_id + 1 << "/" << parallelism
                  << ", execution time: " << (current_time - start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", outliers: " << outliers
                  << ", bandwidth: " << processed / ((current_time - start_time) / 1000000L)
                  << endl;
-        }
+        }*/
     }
 };
 
