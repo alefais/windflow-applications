@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    03/06/2019
+ * @date    05/06/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -12,6 +12,7 @@
 #ifndef FRAUDDETECTION_CLI_UTIL_HPP
 #define FRAUDDETECTION_CLI_UTIL_HPP
 
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -74,7 +75,8 @@ inline void print_summary(const atomic<long>& sent_tuples, double elapsed_time_s
     cout << "[SUMMARY] generated " << sent_tuples << endl;
     cout << "[SUMMARY] elapsed time (seconds) " << elapsed_time_seconds << endl;
     cout << "[SUMMARY] bandwidth (tuples/second) " << sent_tuples / elapsed_time_seconds << endl;
-    cout << "[SUMMARY] average latency (useconds) " << tot_average_latency << endl;
+    cout << "[SUMMARY] average latency (useconds) " << tot_average_latency
+         << " , (ms) " << fixed << setprecision(5) << tot_average_latency / (1000.0) <<  endl;
 }
 
 // information about the model (testing)
