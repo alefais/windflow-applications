@@ -97,6 +97,7 @@ int main(int argc, char* argv[]) {
     size_t sink_par_deg = 0;
     int rate = 0;
     sent_tuples = 0;
+    sink_zero_processed = 0;
 
     /* Program options:
      * - case (argc == 11):
