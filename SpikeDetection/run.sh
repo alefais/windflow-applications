@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # @author   Alessandra Fais
-# @date     04/06/2019
+# @date     05/06/2019
 
 ############################################## create test directories #################################################
 
@@ -29,7 +29,7 @@ do
     do
         printf "\ntest_map --nsource $nsource --naverage $ndet --ndetector $ndet --nsink $ndet\n\n"
 
-        ./main_map --file ~/data/app/sd/sensors.dat --nsource $nsource --naverage $ndet --ndetector $ndet --nsink $ndet --rate -1 | tee ../tests/output_fd60s_map_bounded/main_$nsource_$ndet.log
+        ./main_map --file ~/data/app/sd/sensors.dat --nsource $nsource --naverage $ndet --ndetector $ndet --nsink $ndet --rate -1 | tee ../tests/output_fd60s_map_bounded/main_$nsource-$ndet.log
     done
 done
 
@@ -37,14 +37,14 @@ done
 
 printf "Extracting bandwidth and latency values\n"
 
-#for filename in tests/output_fd60s_map_bounded/*.log; do
+#for filename in ../tests/output_fd60s_map_bounded/*.log; do
 #    if [ ! -e "$filename" ]; then continue; fi
-#    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' | tee tests/output_fd60s_map_bounded/$(basename "$filename" .log)_bw.txt
-#	grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' | tee tests/output_fd60s_map_bounded/$(basename "$filename" .log)_latency.txt
+#    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' | tee ../tests/output_fd60s_map_bounded/$(basename "$filename" .log)_bw.txt
+#    grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' | tee ../tests/output_fd60s_map_bounded/$(basename "$filename" .log)_latency.txt
 #done
 
-for filename in tests/output_fd60s_map_bounded/*.log; do
+for filename in ../tests/output_fd60s_map_bounded/*.log; do
     if [ ! -e "$filename" ]; then continue; fi
-    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' >> tests/output_fd60s_map_bounded/bandwidth.txt
-	grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' >> tests/output_fd60s_map_bounded/latency.txt
+    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' >> ../tests/output_fd60s_map_bounded/bandwidth.txt
+    grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' >> ../tests/output_fd60s_map_bounded/latency.txt
 done
