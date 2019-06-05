@@ -48,7 +48,7 @@ const string app_descr = "Executing TrafficMonitoring with parameters:";
 const string file_str = "* file path: ";
 const string source_str = "* source parallelism degree: ";
 const string map_match_str = "* map matcher parallelism degree: ";
-const string calculator_str = "* calculator parallelism degree: ";
+const string calculator_str = "* speed calculator parallelism degree: ";
 const string sink_str = "* sink parallelism degree: ";
 const string rate_str = "* rate: ";
 
