@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    06/06/2019
+ * @date    07/06/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -12,6 +12,7 @@
 #ifndef WORDCOUNT_CLI_UTIL_HPP
 #define WORDCOUNT_CLI_UTIL_HPP
 
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -21,8 +22,6 @@
 #include "result.hpp"
 
 using namespace std;
-using beijing_record_t = tuple<int, int, string, double, double, double, int>;
-using dublin_record_t = tuple<long, int, int, string, string, int, string, int, double, double, int, int, int, int, int>;
 
 typedef enum { NONE, REQUIRED } opt_arg;    // an option can require one argument or none
 
@@ -75,11 +74,13 @@ inline void print_app_descr(string& file, size_t source, size_t splitter, size_t
          << rate_str << rate << endl;
 }
 
-inline void print_summary(const atomic<long>& sent_tuples, double elapsed_time_seconds, double tot_average_latency) {
-    cout << "[SUMMARY] generated " << sent_tuples << endl;
+inline void print_summary(long long total_bytes, double elapsed_time_seconds, double tot_average_latency) {
+    long sent_MB = total_bytes / 1048576;
+    cout << "[SUMMARY] generated (MB) " << sent_MB << endl;
     cout << "[SUMMARY] elapsed time (seconds) " << elapsed_time_seconds << endl;
-    cout << "[SUMMARY] bandwidth (tuples/second) " << sent_tuples / elapsed_time_seconds << endl;
-    cout << "[SUMMARY] average latency (useconds) " << tot_average_latency << endl;
+    cout << "[SUMMARY] bandwidth (MB/second) " << sent_MB / elapsed_time_seconds << endl;
+    cout << "[SUMMARY] average latency (useconds) " << tot_average_latency
+         << " , (ms) " << fixed << setprecision(5) << tot_average_latency / (1000.0) <<  endl;
 }
 
 // information about parsed data and dataset (testing)
@@ -104,7 +105,7 @@ inline void print_tuple(const string& msg, const tuple_t& t) {
 // information about result tuple content (testing)
 inline void print_result(const string& msg, const result_t& r) {
     cout << msg
-         << r.word << ", "
+         << r.bytes << " - "
          << r.key << " - "
          << r.id << " - "
          << r.ts << endl;

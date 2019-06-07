@@ -1,7 +1,7 @@
 /**
  *  @file    constants.hpp
  *  @author  Alessandra Fais
- *  @date    06/06/2019
+ *  @date    07/06/2019
  *
  *  @brief Definition of useful constants
  */
