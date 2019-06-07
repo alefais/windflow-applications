@@ -1,9 +1,9 @@
 /**
  *  @file    sink.hpp
  *  @author  Alessandra Fais
- *  @date    06/06/2019
+ *  @date    07/06/2019
  *
- *  @brief Sink node that receives and prints the results
+ *  @brief Sink node that receives and prints the number of occurrences of each word in the input text
  */
 
 #ifndef WORDCOUNT_SINK_HPP
@@ -15,6 +15,7 @@
 #include "../util/cli_util.hpp"
 #include "../util/result.hpp"
 
+extern long long total_bytes;
 extern Atomic_Double average_latency_sum;
 extern atomic<int> sink_zero_processed;
 
@@ -29,6 +30,7 @@ private:
     unsigned long app_start_time;
     size_t processed;                       // tuples counter
     vector<unsigned long> tuple_latencies;  // contains the latency of each received tuple
+    long long bytes_sum;
 
     /**
      * Evaluate the average latency value (average time needed by a tuple in order to
@@ -66,7 +68,9 @@ public:
      */
     void operator()(optional<result_t>& r) {
         if (r) {
-            print_result("[Sink] received tuple: ", *r);
+            //print_result("[Sink] received tuple: ", *r);
+
+            bytes_sum += (*r).bytes;
 
             // evaluate tuple latency (always evaluate latency with FF_BOUNDED_BUFFER set)
             //if (rate != -1) {
@@ -79,10 +83,11 @@ public:
         } else {     // EOS
             if (processed != 0) {
                 cout << "[Sink] processed tuples: " << processed
-                     << ", average latency: " << fixed << setprecision(5)
+                     << " words, average latency: " << fixed << setprecision(5)
                      << get_average_latency()// / 1000 << " ms" << endl;
                      << " usecs" << endl;
 
+                total_bytes = bytes_sum;
                 average_latency_sum.fetch_add(get_average_latency()); // add average latency value (useconds)
             } else {
                 cout << "[Sink] processed tuples: " << processed << endl;
