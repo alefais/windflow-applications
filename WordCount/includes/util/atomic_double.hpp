@@ -1,7 +1,7 @@
 /**
  *  @file    atomic_double.hpp
  *  @author  Alessandra Fais
- *  @date    06/06/2019
+ *  @date    07/06/2019
  *
  *  @brief Class implementing atomic fetch and add operation on a double
  *
@@ -11,8 +11,8 @@
  *  in order to obtain the total average latency of the system.
  */
 
-#ifndef TRAFFICMONITORING_ATOMIC_DOUBLE_HPP
-#define TRAFFICMONITORING_ATOMIC_DOUBLE_HPP
+#ifndef WORDCOUNT_ATOMIC_DOUBLE_HPP
+#define WORDCOUNT_ATOMIC_DOUBLE_HPP
 
 #include <ff/ff.hpp>
 #include <windflow.hpp>
@@ -43,4 +43,4 @@ public:
     ~Atomic_Double() {}
 };
 
-#endif //TRAFFICMONITORING_ATOMIC_DOUBLE_HPP
+#endif //WORDCOUNT_ATOMIC_DOUBLE_HPP
