@@ -65,13 +65,11 @@ public:
 
         result_t r;
         while (iter != end) {
-            // save the number of occurences of each word found after line splitting process (shared state)
-            word_occ.fetch_incr(*iter);
-
-            // create the output stream
-            r.key = *iter;                      // word key
-            r.id = word_occ.get(*iter);         // current number of occurrences of the word
-            r.ts = t.ts;                        // timestamp
+            // save the number of occurences of each word found after line splitting process
+            // and fill the output tuple fields
+            r.key = *iter;                          // word key
+            r.id = word_occ.fetch_incr(*iter);      // current number of occurrences of the word
+            r.ts = t.ts;                            // timestamp
             shipper.push(r);
 
             words++;
