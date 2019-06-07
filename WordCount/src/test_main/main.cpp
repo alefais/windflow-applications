@@ -1,7 +1,7 @@
 /**
- *  @file    main_map.cpp
+ *  @file    main.cpp
  *  @author  Alessandra Fais
- *  @date    06/06/2019
+ *  @date    07/06/2019
  *
  *  @brief main of the WordCount application
  */
@@ -16,18 +16,22 @@
 
 #include "../../includes/util/cli_util.hpp"
 #include "../../includes/util/atomic_double.hpp"
+#include "../../includes/util/thread_safe_map.hpp"
 #include "../../includes/util/constants.hpp"
 #include "../../includes/util/tuple.hpp"
+#include "../../includes/util/result.hpp"
 #include "../../includes/nodes/source.hpp"
-
+#include "../../includes/nodes/splitter.hpp"
+#include "../../includes/nodes/counter.hpp"
 #include "../../includes/nodes/sink.hpp"
 
 using namespace std;
 
-vector<tuple_t> dataset;                     // contains all the tuples in memory
-atomic<long> sent_tuples;                    // total number of tuples sent by all the sources
-Atomic_Double average_latency_sum;           // sum of the average latency values measured in each of the sink's replicas
-atomic<int> sink_zero_processed;             // number of sink's replicas that processed zero tuples
+vector<tuple_t> dataset;                    // contains all the input tuples in memory
+Thread_Safe_Map word_occ;                   // total number of occurences of the same word sent by the splitter replicas
+long long total_bytes;                      // total number of bytes processed by the system
+Atomic_Double average_latency_sum;          // sum of the average latency values measured in each of the sink's replicas
+atomic<int> sink_zero_processed;            // number of sink's replicas that processed zero tuples
 
 /**
  *  @brief Parse the input file and create all the tuples
@@ -45,9 +49,11 @@ void parse_dataset_and_create_tuples(const string& file_path) {
         string line;
         while (getline(file, line)) {
             // process file line
-            tuple_t t(line, all_records, 0, 0);
-            all_records++;
-            dataset.push_back(t);
+            if (!line.empty()) {
+                tuple_t t(line, all_records, 0, 0);
+                all_records++;
+                dataset.push_back(t);
+            }
         }
         file.close();
     }
@@ -64,7 +70,7 @@ int main(int argc, char* argv[]) {
     size_t counter_par_deg = 0;
     size_t sink_par_deg = 0;
     int rate = 0;
-    sent_tuples = 0;
+    total_bytes = 0;
     sink_zero_processed = 0;
 
     /* Program options:
@@ -132,7 +138,7 @@ int main(int argc, char* argv[]) {
 
     /// data pre-processing
     parse_dataset_and_create_tuples(file_path);
-    print_dataset(dataset);
+    //print_dataset(dataset);
 
     /// application starting time
     unsigned long app_start_time = current_time_usecs();
@@ -144,7 +150,19 @@ int main(int argc, char* argv[]) {
             .withName(source_name)
             .build();
 
-    // TODO define splitter and counter nodes
+    Splitter_Functor splitter_functor;
+    FlatMap splitter = FlatMap_Builder(splitter_functor)
+            .withParallelism(splitter_par_deg)
+            .withName(splitter_name)
+            .build();
+
+    Counter_Functor counter_functor;
+    result_t r;
+    Accumulator counter = Accumulator_Builder(counter_functor)
+            .withParallelism(counter_par_deg)
+            .withName(counter_name)
+            .withInitialValue(r)
+            .build();
 
     Sink_Functor sink_functor(rate, app_start_time);
     Sink sink = Sink_Builder(sink_functor)
@@ -155,10 +173,9 @@ int main(int argc, char* argv[]) {
     /// create the multi pipe
     MultiPipe topology(topology_name);
     topology.add_source(source);
-
-    // TODO add splitter and counter nodes to the topology
-
-    //topology.add_sink(sink);
+    topology.add(splitter);
+    topology.add(counter);
+    topology.chain_sink(sink);   // in order to exploit chaining, counter and sink must have the same parallelism degree
 
     /// evaluate topology execution time
     volatile unsigned long start_time_main_usecs = current_time_usecs();
@@ -173,7 +190,7 @@ int main(int argc, char* argv[]) {
     double tot_average_latency = average_latency_sum.get() / (sink_par_deg - sink_zero_processed);
 
     /// print application results summary (run with FF_BOUNDED_BUFFER set)
-    print_summary(sent_tuples, elapsed_time_seconds, tot_average_latency);
+    print_summary(total_bytes, elapsed_time_seconds, tot_average_latency);
 
     return 0;
 }
