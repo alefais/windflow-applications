@@ -16,11 +16,9 @@
 #include <ff/ff.hpp>
 #include "../util/tuple.hpp"
 #include "../util/constants.hpp"
+#include "../util/cli_util.hpp"
 
-using namespace ff;
 using namespace std;
-
-extern atomic<long> sent_tuples;
 
 /**
  *  @class Source_Functor
@@ -98,7 +96,7 @@ public:
         t.id = tuple.id;
         t.ts = current_time - app_start_time;
 
-        print_tuple("[Source] tuple content: ", t);
+        //print_tuple("[Source] tuple content: ", t);
 
         if (rate != -1) // stream generation rate is fixed
             active_delay(interval / rate);
@@ -112,8 +110,6 @@ public:
                  << ", generated: " << generated_tuples
                  << ", bandwidth: " << generated_tuples / ((current_time - start_time) / 1000000L)
                  << " tuples/s" << endl;
-
-            sent_tuples.fetch_add(generated_tuples);
             return false;
         }
         return true;         // stream not ended yet
