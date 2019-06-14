@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    05/06/2019
+ * @date    14/06/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -18,6 +18,7 @@
 #include <getopt.h>
 #include "constants.hpp"
 #include "tuple.hpp"
+#include "result.hpp"
 
 using namespace std;
 using beijing_record_t = tuple<int, int, string, double, double, double, int>;
@@ -132,7 +133,7 @@ inline void print_dataset(const vector<tuple_t>& dataset) {
              << t.ts << endl;
 }
 
-// information about tuple content (testing)
+// information about input tuple content (testing)
 inline void print_tuple(const string& msg, const tuple_t& t) {
     cout << msg
          << t.latitude << " - "
@@ -142,6 +143,15 @@ inline void print_tuple(const string& msg, const tuple_t& t) {
          << t.key << " - "
          << t.id << " - "
          << t.ts << endl;
+}
+
+// information about tuple result content (testing)
+inline void print_result(const string& msg, const result_t& r) {
+    cout << msg
+         << r.speed << ", "
+         << r.key << " - "
+         << r.id << " - "
+         << r.ts << endl;
 }
 
 #endif //TRAFFICMONITORING_CLI_UTIL_HPP
