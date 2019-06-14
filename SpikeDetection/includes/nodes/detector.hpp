@@ -17,9 +17,9 @@ using namespace ff;
 using namespace std;
 
 /**
- *  @class Predictor_Functor
+ *  @class Detector_Functor
  *
- *  @brief Define the logic of the Predictor
+ *  @brief Define the logic of the Spike Detector
  */
 class Detector_Functor {
 private:
