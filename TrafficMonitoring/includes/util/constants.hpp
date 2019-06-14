@@ -1,7 +1,7 @@
 /**
  *  @file    constants.hpp
  *  @author  Alessandra Fais
- *  @date    04/06/2019
+ *  @date    14/06/2019
  *
  *  @brief Definition of useful constants
  */
@@ -46,10 +46,13 @@ const double dublin_lat_max = 53.406071;
 const double dublin_lon_min = -6.381911;
 const double dublin_lon_max = -6.141994;
 
-/// model parameters
+/// application parameters
 city _monitored_city = BEIJING;     // user can choose between two options: BEIJING and DUBLIN
 
 const string _beijing_input_file = "../data/taxi-traces.csv";           // path of the Beijing dataset to be used
 const string _dublin_input_file = "../data/bus-traces_20130101.csv";    // path of the Dublin dataset to be used
+
+const string _beijing_shapefile = "../data/beijing/roads.shp";          // path of the Beijing shape file
+const string _dublin_shapefile = "../data/dublin/roads.shp";            // path of the Dublin shape file
 
 #endif //TRAFFICMONITORING_CONSTANTS_HPP
