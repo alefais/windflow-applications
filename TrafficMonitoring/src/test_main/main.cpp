@@ -1,7 +1,7 @@
 /**
  *  @file    main_map.cpp
  *  @author  Alessandra Fais
- *  @date    05/06/2019
+ *  @date    14/06/2019
  *
  *  @brief main of the SpikeDetection application
  *
@@ -33,7 +33,7 @@
 #include "../../includes/util/constants.hpp"
 #include "../../includes/util/tuple.hpp"
 #include "../../includes/nodes/source.hpp"
-
+#include "../../includes/nodes/map_matcher.hpp"
 #include "../../includes/nodes/sink.hpp"
 
 using namespace std;
@@ -275,7 +275,13 @@ int main(int argc, char* argv[]) {
             .withName(source_name)
             .build();
 
-    // TODO define map matcher and speed calculator nodes
+    Map_Matcher_Functor map_match_functor;
+    FlatMap map_matcher = FlatMap_Builder(map_match_functor)
+            .withParallelism(matcher_par_deg)
+            .withName(map_match_name)
+            .build();
+
+    // TODO define speed calculator node
 
     Sink_Functor sink_functor(rate, app_start_time);
     Sink sink = Sink_Builder(sink_functor)
@@ -286,8 +292,9 @@ int main(int argc, char* argv[]) {
     /// create the multi pipe
     MultiPipe topology(topology_name);
     topology.add_source(source);
+    topology.add(map_matcher);
 
-    // TODO add map matcher and speed calculator nodes to the topology
+    // TODO add speed calculator node to the topology
 
     topology.add_sink(sink);
 
