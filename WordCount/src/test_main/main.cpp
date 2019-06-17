@@ -1,7 +1,7 @@
 /**
  *  @file    main.cpp
  *  @author  Alessandra Fais
- *  @date    07/06/2019
+ *  @date    17/06/2019
  *
  *  @brief main of the WordCount application
  */
@@ -16,7 +16,6 @@
 
 #include "../../includes/util/cli_util.hpp"
 #include "../../includes/util/atomic_double.hpp"
-#include "../../includes/util/thread_safe_map.hpp"
 #include "../../includes/util/constants.hpp"
 #include "../../includes/util/tuple.hpp"
 #include "../../includes/util/result.hpp"
@@ -28,8 +27,7 @@
 using namespace std;
 
 vector<tuple_t> dataset;                    // contains all the input tuples in memory
-Thread_Safe_Map word_occ;                   // total number of occurences of the same word sent by the splitter replicas
-long long total_bytes;                      // total number of bytes processed by the system
+atomic<long> total_bytes;                   // total number of bytes processed by the system
 Atomic_Double average_latency_sum;          // sum of the average latency values measured in each of the sink's replicas
 atomic<int> sink_zero_processed;            // number of sink's replicas that processed zero tuples
 
@@ -157,11 +155,10 @@ int main(int argc, char* argv[]) {
             .build();
 
     Counter_Functor counter_functor;
-    result_t r;
     Accumulator counter = Accumulator_Builder(counter_functor)
             .withParallelism(counter_par_deg)
             .withName(counter_name)
-            .withInitialValue(r)
+            .withInitialValue(result_t())
             .build();
 
     Sink_Functor sink_functor(rate, app_start_time);
@@ -174,8 +171,8 @@ int main(int argc, char* argv[]) {
     MultiPipe topology(topology_name);
     topology.add_source(source);
     topology.add(splitter);
-    topology.add(counter);
-    topology.chain_sink(sink);   // in order to exploit chaining, counter and sink must have the same parallelism degree
+    topology.add(counter);       // in order to exploit chaining, counter and sink must have the same parallelism degree
+    topology.chain_sink(sink);
 
     /// evaluate topology execution time
     volatile unsigned long start_time_main_usecs = current_time_usecs();
