@@ -1,7 +1,7 @@
 /**
  *  @file    sink.hpp
  *  @author  Alessandra Fais
- *  @date    07/06/2019
+ *  @date    17/06/2019
  *
  *  @brief Sink node that receives and prints the number of occurrences of each word in the input text
  */
@@ -15,7 +15,7 @@
 #include "../util/cli_util.hpp"
 #include "../util/result.hpp"
 
-extern long long total_bytes;
+extern atomic<long> total_bytes;
 extern Atomic_Double average_latency_sum;
 extern atomic<int> sink_zero_processed;
 
@@ -83,14 +83,15 @@ public:
         } else {     // EOS
             if (processed != 0) {
                 cout << "[Sink] processed tuples: " << processed
-                     << " words, average latency: " << fixed << setprecision(5)
+                     << " words (" << bytes_sum << " bytes)"
+                     << ", average latency: " << fixed << setprecision(5)
                      << get_average_latency()// / 1000 << " ms" << endl;
                      << " usecs" << endl;
 
-                total_bytes = bytes_sum;
+                total_bytes.fetch_add(bytes_sum);
                 average_latency_sum.fetch_add(get_average_latency()); // add average latency value (useconds)
             } else {
-                cout << "[Sink] processed tuples: " << processed << endl;
+                //cout << "[Sink] processed tuples: " << processed << endl;
 
                 sink_zero_processed.fetch_add(1);
             }
