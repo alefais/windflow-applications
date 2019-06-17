@@ -25,7 +25,7 @@ struct result_t {
     uint64_t ts;            // timestamp
 
     // default constructor
-    result_t(): key("undefined_key"), id(0), ts(0), bytes(0) {}
+    result_t(): key(""), id(0), ts(0), bytes(0) {}
 
     // constructor
     result_t(string& _key, uint64_t _id, uint64_t _ts): key(_key), id(_id), ts(_ts), bytes(0) {}
