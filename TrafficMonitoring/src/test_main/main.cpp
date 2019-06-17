@@ -1,7 +1,7 @@
 /**
  *  @file    main_map.cpp
  *  @author  Alessandra Fais
- *  @date    14/06/2019
+ *  @date    17/06/2019
  *
  *  @brief main of the SpikeDetection application
  *
@@ -34,6 +34,7 @@
 #include "../../includes/util/tuple.hpp"
 #include "../../includes/nodes/source.hpp"
 #include "../../includes/nodes/map_matcher.hpp"
+#include "../../includes/nodes/speed_calculator.hpp"
 #include "../../includes/nodes/sink.hpp"
 
 using namespace std;
@@ -281,7 +282,12 @@ int main(int argc, char* argv[]) {
             .withName(map_match_name)
             .build();
 
-    // TODO define speed calculator node
+    Speed_Calculator_Functor speed_calc_functor;
+    Map speed_calculator = Map_Builder(speed_calc_functor)
+            .withParallelism(calculator_par_deg)
+            .withName(speed_calc_name)
+            .enable_KeyBy()
+            .build();
 
     Sink_Functor sink_functor(rate, app_start_time);
     Sink sink = Sink_Builder(sink_functor)
@@ -293,10 +299,8 @@ int main(int argc, char* argv[]) {
     MultiPipe topology(topology_name);
     topology.add_source(source);
     topology.add(map_matcher);
-
-    // TODO add speed calculator node to the topology
-
-    topology.add_sink(sink);
+    topology.add(speed_calculator);  // in order to exploit chaining, calculator and sink must have the same parallelism degree
+    topology.chain_sink(sink);
 
     /// evaluate topology execution time
     volatile unsigned long start_time_main_usecs = current_time_usecs();
