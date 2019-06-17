@@ -76,11 +76,14 @@ inline void print_app_descr(string& file, size_t source, size_t splitter, size_t
 
 inline void print_summary(long long total_bytes, double elapsed_time_seconds, double tot_average_latency) {
     long sent_MB = total_bytes / 1048576;
-    cout << "[SUMMARY] generated (MB) " << sent_MB << endl;
+    long sent_GB = sent_MB / 1024;
+    cout << "[SUMMARY] generated " << sent_MB << " (MB) " << sent_GB << " (GB)" << endl;
     cout << "[SUMMARY] elapsed time (seconds) " << elapsed_time_seconds << endl;
-    cout << "[SUMMARY] bandwidth (MB/second) " << sent_MB / elapsed_time_seconds << endl;
-    cout << "[SUMMARY] average latency (useconds) " << tot_average_latency
-         << " , (ms) " << fixed << setprecision(5) << tot_average_latency / (1000.0) <<  endl;
+    cout << "[SUMMARY] bandwidth "
+         << sent_MB / elapsed_time_seconds << " (MB/second) "
+         << sent_GB / elapsed_time_seconds << " (GB/second) " << endl;
+    cout << "[SUMMARY] average latency " << tot_average_latency << " (useconds), "
+         << fixed << setprecision(5) << tot_average_latency / (1000.0) << " (ms) " <<  endl;
 }
 
 // information about parsed data and dataset (testing)
