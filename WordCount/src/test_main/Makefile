@@ -1,8 +1,8 @@
 # Author: Alessandra Fais
-# Date: 06/06/2019
+# Date: 17/06/2019
 
-FF_ROOT			= $(HOME)/WindFlow/fastflow/
-WF_INCLUDES		= $(HOME)/WindFlow/includes/
+FF_ROOT			= $(HOME)/WindFlow/fastflow
+WF_INCLUDES		= $(HOME)/WindFlow/includes
 INCLUDE_DIR		= ../../includes
 OUT_DIR			= ../../bin
 
