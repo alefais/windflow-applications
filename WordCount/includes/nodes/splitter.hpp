@@ -1,7 +1,7 @@
 /**
  *  @file    splitter.hpp
  *  @author  Alessandra Fais
- *  @date    07/06/2019
+ *  @date    17/06/2019
  *
  *  @brief Node that splits each received text line into single words
  */
@@ -15,13 +15,10 @@
 #include <regex>
 #include "../util/tuple.hpp"
 #include "../util/result.hpp"
-#include "../util/thread_safe_map.hpp"
 #include "../util/constants.hpp"
 #include "../util/cli_util.hpp"
 
 using namespace std;
-
-extern Thread_Safe_Map word_occ;   // contains the number of occurrences of each key word in the whole text
 
 /**
  *  @class Splitter_Functor
@@ -52,7 +49,7 @@ public:
         current_time = start_time;
     }
 
-    void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext rc) {
+    void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext& rc) {
         if (processed == 0) {
             parallelism = rc.getParallelism();
             replica_id = rc.getReplicaIndex();
@@ -68,25 +65,25 @@ public:
             // save the number of occurences of each word found after line splitting process
             // and fill the output tuple fields
             r.key = *iter;                          // word key
-            r.id = word_occ.fetch_incr(*iter);      // current number of occurrences of the word
             r.ts = t.ts;                            // timestamp
             shipper.push(r);
-
             words++;
             iter++;
+
+            //print_result("[Splitter] Sent tuple: ", r);
         }
         processed++;
         current_time = current_time_usecs();
     }
 
      ~Splitter_Functor() {
-         if (processed != 0) {
+         /*if (processed != 0) {
              cout << "[Splitter] replica " << replica_id + 1 << "/" << parallelism
                   << ", execution time: " << (current_time - start_time) / 1000000L
                   << " s, processed: " << processed << " lines (" << words << " words)"
                   << ", bandwidth: " << words / ((current_time - start_time) / 1000000L)
                   << " words/s" << endl;
-         }
+         }*/
      }
 };
 
