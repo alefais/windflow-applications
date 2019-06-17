@@ -1,7 +1,7 @@
 /**
  *  @file    main.hpp
  *  @author  Alessandra Fais
- *  @date    13/06/2019
+ *  @date    17/06/2019
  *
  *  @brief Definition of main class to test Road_Grid_List functionalities.
  */
@@ -15,7 +15,8 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     /// read shapefile
-    Road_Grid_List road_grid_list("../data/beijing/roads.shp");
+    Road_Grid_List road_grid_list;
+    road_grid_list.read_shapefile("../data/beijing/roads.shp");
 
     /// process 4 records of the original dataset
     string file = "4186589,33556,2009-01-06T05:19:07,40.0426,116.609,0,0\n"
