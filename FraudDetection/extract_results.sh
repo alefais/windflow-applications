@@ -15,9 +15,9 @@ do
     NPRED_MAX=$((NTHREADS-nsource))
     for npred in $(seq 1 $NPRED_MAX);
     do
-        printf "extract from tests/output_fd60s_light_bounded/main_$nsource-$npred.log\n\n"
+        printf "extract from tests/output_60s_light_bounded/main_$nsource-$npred.log\n\n"
 
-        grep "\[SUMMARY\] bandwidth" tests/output_fd60s_light_bounded/main_$nsource-$npred.log | awk  -F'[, ]' '{ print $4 }' >> tests/output_fd60s_light_bounded/bandwidth.txt
-	    grep "\[SUMMARY\] average latency" tests/output_fd60s_light_bounded/main_$nsource-$npred.log | awk  -F'[, ]' '{ print $7 }' >> tests/output_fd60s_light_bounded/latency.txt
+        grep "\[SUMMARY\] bandwidth" tests/output_60s_light_bounded/main_$nsource-$npred.log | awk  -F'[, ]' '{ print $4 }' >> tests/output_60s_light_bounded/bandwidth.txt
+	    grep "\[SUMMARY\] average latency" tests/output_60s_light_bounded/main_$nsource-$npred.log | awk  -F'[, ]' '{ print $7 }' >> tests/output_60s_light_bounded/latency.txt
     done
 done

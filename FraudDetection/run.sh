@@ -8,8 +8,8 @@
 if [ ! -d tests ]; then
     mkdir tests
 fi
-if [ ! -d tests/output_fd60s_light_bounded ]; then
-    mkdir tests/output_fd60s_light_bounded
+if [ ! -d tests/output_60s_light_bounded ]; then
+    mkdir tests/output_60s_light_bounded
 fi
 
 #################################################### run tests #########################################################
@@ -29,6 +29,6 @@ do
     do
         printf "\ntest_light_source --nsource $nsource --npred $npred --nsink $npred\n\n"
 
-        ./main_light_source --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_fd60s_light_bounded/main_$nsource-$npred.log
+        ./main_light_source --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_60s_light_bounded/main_$nsource-$npred.log
     done
 done
