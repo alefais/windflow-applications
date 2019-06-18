@@ -21,7 +21,7 @@ printf "Running tests map bounded buffer\n"
 NCORES=16
 NTHREADS=32
 
-NSOURCE_MAX=5
+NSOURCE_MAX=10
 for nsource in $(seq 1 $NSOURCE_MAX);
 do
     NMATCH_MAX=$((NTHREADS-nsource-nsource))

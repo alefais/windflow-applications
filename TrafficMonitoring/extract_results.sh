@@ -8,7 +8,7 @@
 printf "Extracting bandwidth and latency values\n"
 
 NTHREADS=32
-NSOURCE_MAX=16
+
 NSOURCE_MAX=5
 for nsource in $(seq 1 $NSOURCE_MAX);
 do
