@@ -55,4 +55,6 @@ const string _dublin_input_file = "../data/bus-traces_20130101.csv";    // path 
 const string _beijing_shapefile = "../data/beijing/roads.shp";          // path of the Beijing shape file
 const string _dublin_shapefile = "../data/dublin/roads.shp";            // path of the Dublin shape file
 
+size_t _road_win_size = 1000;
+
 #endif //TRAFFICMONITORING_CONSTANTS_HPP
