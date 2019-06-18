@@ -82,7 +82,7 @@ inline void print_summary(long long total_bytes, double elapsed_time_seconds, do
     cout << "[SUMMARY] bandwidth "
          << sent_MB / elapsed_time_seconds << " (MB/second) "
          << sent_GB / elapsed_time_seconds << " (GB/second) " << endl;
-    cout << "[SUMMARY] average latency " << tot_average_latency << " (useconds), "
+    cout << "[SUMMARY] average latency " << tot_average_latency << " (useconds) "
          << fixed << setprecision(5) << tot_average_latency / (1000.0) << " (ms) " <<  endl;
 }
 
