@@ -52,15 +52,15 @@ vector<beijing_record_t> beijing_parsed_file;           // contains data extract
 vector<dublin_record_t> dublin_parsed_file;             // contains data extracted from the Dublin input file
 vector<tuple_t> dataset;                                // contains all the tuples in memory
 unordered_map<size_t, uint64_t> key_occ;                // contains the number of occurrences of each key vehicle_id
+Road_Grid_List road_grid_list;                          // contains data extracted from the city shapefile
 atomic<long> sent_tuples;                               // total number of tuples sent by all the sources
 Atomic_Double average_latency_sum;                      // sum of the average latency values measured in each of the sink's replicas
 atomic<int> sink_zero_processed;                        // number of sink's replicas that processed zero tuples
 
 /**
- *  @brief Parse the input file
+ *  @brief Parse the input file.
  *
  *  The file is parsed and saved in memory.
- *
  *  @param file_path the path of the input dataset file
  */
 void parse_dataset(const string& file_path) {
@@ -145,7 +145,7 @@ void parse_dataset(const string& file_path) {
 }
 
 /**
- *  @brief Process parsed data and create all the tuples
+ *  @brief Process parsed data and create all the tuples.
  *
  *  The created tuples are maintained in memory. The source node will generate the stream by
  *  reading all the tuples from main memory.
@@ -180,6 +180,18 @@ void create_tuples() {
             dataset.insert(dataset.end(), t);
         }
     }
+}
+
+/**
+ *  @brief Parse the shapefile and create a the Road_Grid_List data structure.
+ *
+ *  The data structure containing the processed information about the roads of the city
+ *  is passed to the MapMatcher node and use to implement the map matching logic.
+ */
+void read_shapefile() {
+    string shapefile_path = (_monitored_city == DUBLIN) ? _dublin_shapefile : _beijing_shapefile;
+    if (road_grid_list.read_shapefile(shapefile_path) == -1)
+        __throw_invalid_argument("Failed reading shapefile");
 }
 
 int main(int argc, char* argv[]) {
@@ -264,6 +276,7 @@ int main(int argc, char* argv[]) {
     /// data pre-processing
     parse_dataset(file_path);
     create_tuples();
+    read_shapefile();
     //print_dataset(dataset);
 
     /// application starting time
@@ -276,13 +289,13 @@ int main(int argc, char* argv[]) {
             .withName(source_name)
             .build();
 
-    Map_Matcher_Functor map_match_functor;
+    Map_Matcher_Functor map_match_functor(road_grid_list, app_start_time);
     FlatMap map_matcher = FlatMap_Builder(map_match_functor)
             .withParallelism(matcher_par_deg)
             .withName(map_match_name)
             .build();
 
-    Speed_Calculator_Functor speed_calc_functor;
+    Speed_Calculator_Functor speed_calc_functor(app_start_time);
     Map speed_calculator = Map_Builder(speed_calc_functor)
             .withParallelism(calculator_par_deg)
             .withName(speed_calc_name)
