@@ -26,7 +26,6 @@ typedef enum { NONE, REQUIRED } opt_arg;    // an option can require one argumen
 
 const struct option long_opts[] = {
         {"help", NONE, 0, 'h'},
-        {"file", REQUIRED, 0, 'f'},         // input file path
         {"nsource", REQUIRED, 0, 's'},      // pipe start (source) parallelism degree
         {"npredictor", REQUIRED, 0, 'p'},   // predictor parallelism degree
         {"nsink", REQUIRED, 0, 'e'},        // pipe end (sink) parallelism degree
@@ -37,8 +36,8 @@ const struct option long_opts[] = {
 
 // how to run the application
 const string intro = "Run FraudDetection choosing one of the following ways:";
-const string run_mode1 = " --file [file_path] --nsource [source_par_deg] --npredictor [predictor_par_deg] --nsink [sink_par_deg] --rate [stream_gen_rate]";
-const string run_mode2 = " --file [file_path] --pardeg [par_deg_for_all_nodes] --rate [stream_gen_rate]";
+const string run_mode1 = " --nsource [source_par_deg] --npredictor [predictor_par_deg] --nsink [sink_par_deg] --rate [stream_gen_rate]";
+const string run_mode2 = " --pardeg [par_deg_for_all_nodes] --rate [stream_gen_rate]";
 const string run_help = " --help";
 
 // information about application

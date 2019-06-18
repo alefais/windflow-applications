@@ -100,19 +100,18 @@ int main(int argc, char* argv[]) {
     sink_zero_processed = 0;
 
     /* Program options:
-     * - case (argc == 11):
-     * specified parameters are --file, --nsource, --npredictor, --nsink, --rate (and their arguments)
-     * - case (argc == 7):
-     * specified parameters are --file, --pardeg, --rate (and their arguments)
+     * - case (argc == 9):
+     * specified parameters are --nsource, --npredictor, --nsink, --rate (and their arguments)
+     * - case (argc == 5):
+     * specified parameters are --pardeg, --rate (and their arguments)
      * - case (argc == 2):
      * specified parameter is --help (with no argument)
      */
     opterr = 1;     // turn on/off getopt error messages
-    if (argc == 11) {
-        while ((option = getopt_long(argc, argv, "f:s:p:e:r:", long_opts, &index)) != -1) {
+    if (argc == 9) {
+        while ((option = getopt_long(argc, argv, "s:p:e:r:", long_opts, &index)) != -1) {
+            file_path = _input_file;
             switch (option) {
-                case 'f': file_path = optarg;
-                    break;
                 case 's': source_par_deg = atoi(optarg);
                     break;
                 case 'p': predictor_par_deg = atoi(optarg);
@@ -126,11 +125,10 @@ int main(int argc, char* argv[]) {
                     exit(EXIT_SUCCESS);
             }
         }
-    } else if (argc == 7) {
-        while ((option = getopt_long(argc, argv, "f:n:r:", long_opts, &index)) != -1) {
+    } else if (argc == 5) {
+        while ((option = getopt_long(argc, argv, "n:r:", long_opts, &index)) != -1) {
+            file_path = _input_file;
             switch (option) {
-                case 'f': file_path = optarg;
-                    break;
                 case 'n':
                     source_par_deg = atoi(optarg);
                     predictor_par_deg = atoi(optarg);
