@@ -25,7 +25,7 @@ NSOURCE_MAX=10
 for nsource in $(seq 1 $NSOURCE_MAX);
 do
     NSPLIT_MAX=$((NTHREADS-nsource-nsource))
-    for nsplit in $(seq 1 $NMATCH_MAX);
+    for nsplit in $(seq 1 $NSPLIT_MAX);
     do
         printf "\ntest_map --nsource $nsource --nsplitter $nsplit --ncounter $nsource --nsink $nsource\n\n"
 
