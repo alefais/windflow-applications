@@ -13,7 +13,7 @@ test_average_calculator:
 	$(MAKE) -C test_average_calculator
 
 clean:
-	$(MAKE) clean -C test_main
+	$(MAKE) clean -C test_main_map
 	$(MAKE) clean -C test_average_calculator
 
 .DEFAULT_GOAL := all
