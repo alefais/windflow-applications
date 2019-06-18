@@ -78,7 +78,7 @@ inline void print_summary(long long total_bytes, double elapsed_time_seconds, do
     long sent_MB = total_bytes / 1048576;
     long sent_GB = sent_MB / 1024;
     cout << "[SUMMARY] generated " << sent_MB << " (MB) " << sent_GB << " (GB)" << endl;
-    cout << "[SUMMARY] elapsed time (seconds) " << elapsed_time_seconds << endl;
+    cout << "[SUMMARY] elapsed time " << elapsed_time_seconds << " (seconds)" << endl;
     cout << "[SUMMARY] bandwidth "
          << sent_MB / elapsed_time_seconds << " (MB/second) "
          << sent_GB / elapsed_time_seconds << " (GB/second) " << endl;
