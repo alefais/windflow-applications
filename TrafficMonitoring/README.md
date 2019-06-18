@@ -15,16 +15,16 @@ TrafficMonitoring application can be run passing some arguments:<ul><li>`--nsour
 Two datasets are currently supported:
 * Beijing city taxi-traces
 * Dublin city bus-traces
-Select the city by setting the `_monitored_city` parameter and the dataset file path in the file `includes/util/constants.hpp`. Default settings are `_monitored_city = BEIJING` and `_beijing_input_file = "../data/taxi-traces.csv"`.
+<br>
+The city can be selected by setting the `_monitored_city` parameter and the dataset file path in in [constants.hpp](https://github.com/alefais/windflow-applications/blob/master/TrafficMonitoring/includes/util/constants.hpp). Default values are `_monitored_city = BEIJING` and `_beijing_input_file = "../data/taxi-traces.csv"`.
 
 ### Execution examples:
 * Run the version with Map operator specifying explicitly the parallelism degree of all the nodes in the system and the generation rate (expressed in tuple/s): <br> `./main_map --nsource 1 --nmatcher 1 --ncalculator 1 --nsink 1 --rate -1`
 <!--
 * Run the version with Keyed Farm operator specifying the same parallelism degree for all the nodes in the system and the generation rate (expressed in tuple/s): <br> `./main_keyfarm --file ~/data/app/sd/sensors.dat --pardeg 2 --rate 1000000`
-
-<b>NB:</b> Running the application as `./main_map --help` or as `./main_keyfarm --help` visualizes all the parameter options.
+-->
+<b>NB:</b> Running the application as `./main_map --help` <!--or as `./main_keyfarm --help`--> visualizes all the parameter options.
 
 <b>NB:</b> It is possible to set `FF_BOUNDED_BUFFER` FastFlow macro in the provided Makefile in order to use bounded queues instead of the default unbounded ones.
 
 <b>NB:</b> The current implementation exploits the chaining of the operators supported by WindFlow. Chaining can be performed only if the operators have the same parallelism degree, in which case the chained operators will be executed within the same thread. In the SpikeDetection topology <strong>average calculator</strong>, <strong>detector</strong> and <strong>sink</strong> are chained together if it is possible (if they all have the same parallelism degree).
--->
