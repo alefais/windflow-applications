@@ -120,13 +120,13 @@ public:
     }
 
     ~Speed_Calculator_Functor() {
-        if (processed != 0) {
+        /*if (processed != 0) {
             cout << "[SpeedCalculator] replica " << replica_id + 1 << "/" << parallelism
                  << ", execution time: " << (current_time - app_start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", bandwidth: " << processed / ((current_time - app_start_time) / 1000000L)
                  << endl;
-        }
+        }*/
     }
 };
 

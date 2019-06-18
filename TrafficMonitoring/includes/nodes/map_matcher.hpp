@@ -117,15 +117,15 @@ public:
      *  @brief Destructor.
      */
     ~Map_Matcher_Functor() {
-        if (processed != 0) {
-            cout << "[MapMatcher] replica " << replica_id + 1 << "/" << parallelism
+        //if (processed != 0) {
+            /*cout << "[MapMatcher] replica " << replica_id + 1 << "/" << parallelism
                  << ", execution time: " << (current_time - app_start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", valid (inside city box): " << valid_points
                  << ", emitted (#all_keys): " << emitted
                  << ", bandwidth: " << processed / ((current_time - app_start_time) / 1000000L)
                  << ", #dif_keys: " << key_occ.size()
-                 << endl;
+                 << endl;*/
 
             // print road_id keys and number of occurrences
             /*     << ", keys: "
@@ -133,7 +133,7 @@ public:
             for (auto k : key_occ) {
                 cout << "key: " << k.first << " id: " << k.second << endl;
             }*/
-        }
+        //}
     }
 };
 

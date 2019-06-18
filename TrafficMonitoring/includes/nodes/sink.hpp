@@ -78,14 +78,14 @@ public:
             processed++;        // tuples counter
         } else {     // EOS
             if (processed != 0) {
-                cout << "[Sink] processed tuples: " << processed
+                /*cout << "[Sink] processed tuples: " << processed
                      << ", average latency: " << fixed << setprecision(5)
                      << get_average_latency()// / 1000 << " ms" << endl;
-                     << " usecs" << endl;
+                     << " usecs" << endl;*/
 
                 average_latency_sum.fetch_add(get_average_latency()); // add average latency value (useconds)
             } else {
-                cout << "[Sink] processed tuples: " << processed << endl;
+                //cout << "[Sink] processed tuples: " << processed << endl;
 
                 sink_zero_processed.fetch_add(1);
             }

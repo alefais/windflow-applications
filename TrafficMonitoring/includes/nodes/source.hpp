@@ -106,11 +106,11 @@ public:
 
         // EOS reached
         if (current_time - app_start_time >= app_run_time) {// && next_tuple_idx == 0) {
-            cout << "[Source] execution time: " << (current_time - app_start_time) / 1000000L
+            /*cout << "[Source] execution time: " << (current_time - app_start_time) / 1000000L
                  << " s, generations: " << generations
                  << ", generated: " << generated_tuples
                  << ", bandwidth: " << generated_tuples / ((current_time - app_start_time) / 1000000L)
-                 << " tuples/s" << endl;
+                 << " tuples/s" << endl;*/
 
             sent_tuples.fetch_add(generated_tuples);
             return false;
