@@ -145,7 +145,7 @@ int main(int argc, char* argv[]) {
      * specified parameter is --help (with no argument)
      */
     opterr = 1;     // turn on/off getopt error messages
-    if (argc == 13) {
+    if (argc == 11) {
         while ((option = getopt_long(argc, argv, "s:a:d:e:r:", long_opts, &index)) != -1) {
             file_path = _input_file;
             switch (option) {
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
                     exit(EXIT_SUCCESS);
             }
         }
-    } else if (argc == 7) {
+    } else if (argc == 5) {
         while ((option = getopt_long(argc, argv, "n:r:", long_opts, &index)) != -1) {
             file_path = _input_file;
             switch (option) {
