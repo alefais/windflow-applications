@@ -15,7 +15,7 @@ do
     NMATCH_MAX=$((NTHREADS-nsource-nsource))
     for nmatch in $(seq 1 $NMATCH_MAX);
     do
-        printf "extract from tests/output_fd60s_map_bounded/main_$nsource-$nmatch-$nsource.log\n\n"
+        printf "extract from tests/output_60s_map_bounded/main_$nsource-$nmatch-$nsource.log\n\n"
 
         grep "\[SUMMARY\] bandwidth" tests/output_60s_map_bounded/main_$nsource-$nmatch-$nsource.log | awk  -F'[, ]' '{ print $3 }' >> tests/output_60s_map_bounded/bandwidth.txt
 	    grep "\[SUMMARY\] average latency" tests/output_60s_map_bounded/main_$nsource-$nmatch-$nsource.log | awk  -F'[, ]' '{ print $6 }' >> tests/output_60s_map_bounded/latency.txt
