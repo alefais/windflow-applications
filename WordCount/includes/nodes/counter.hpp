@@ -1,7 +1,7 @@
 /**
  *  @file    counter.hpp
  *  @author  Alessandra Fais
- *  @date    07/06/2019
+ *  @date    18/06/2019
  *
  *  @brief Node that counts the occurrences of each word and the number of bytes processed
  */
@@ -31,7 +31,7 @@ private:
     long bytes;                  // bytes counter
 
     // time variables
-    unsigned long start_time;
+    unsigned long app_start_time;
     unsigned long current_time;
 
     // runtime information
@@ -43,11 +43,10 @@ public:
     /**
      *  @brief Constructor
      */
-     Counter_Functor(): bytes(0L) {
-        // initialize time variables
-        start_time = current_time_usecs();
-        current_time = start_time;
-     }
+     Counter_Functor(const unsigned long _app_start_time):
+            bytes(0L),
+            app_start_time(_app_start_time),
+            current_time(_app_start_time) {}
 
      void operator()(const result_t& in, result_t& out, RuntimeContext& rc) {
          if (processed == 0) {
@@ -69,10 +68,11 @@ public:
      ~Counter_Functor() {
          /*if (processed != 0) {
              cout << "[Counter] replica " << replica_id + 1 << "/" << parallelism
-                  << ", execution time: " << (current_time - start_time) / 1000000L
-                  << " s, processed: " << processed << " words, " << (bytes / 1048576) << " MB)"
-                  << ", bandwidth: " << (bytes / 1048576) / ((current_time - start_time) / 1000000L)
-                  << " MB/s" << endl;
+                  << ", execution time: " << (current_time - app_start_time) / 1000000L
+                  << " s, processed: " << processed << " words (" << (bytes / 1048576) << " MB)"
+                  << ", bandwidth: " << processed / ((current_time - app_start_time) / 1000000L)
+                  << " (words/s) " << (bytes / 1048576) / ((current_time - app_start_time) / 1000000L)
+                  << " (MB/s)" << endl;
          }*/
      }
 };

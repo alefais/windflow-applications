@@ -1,7 +1,7 @@
 /**
  *  @file    splitter.hpp
  *  @author  Alessandra Fais
- *  @date    17/06/2019
+ *  @date    18/06/2019
  *
  *  @brief Node that splits each received text line into single words
  */
@@ -31,7 +31,7 @@ private:
     size_t words;           // words counter (number of words produced as output of the line splitting process)
 
     // time variables
-    unsigned long start_time;
+    unsigned long app_start_time;
     unsigned long current_time;
 
     // runtime information
@@ -43,11 +43,11 @@ public:
     /**
      *  @brief Constructor
      */
-    Splitter_Functor(): processed(0), words(0) {
-        // initialize time variables
-        start_time = current_time_usecs();
-        current_time = start_time;
-    }
+    Splitter_Functor(const unsigned long _app_start_time):
+            processed(0),
+            words(0),
+            app_start_time(_app_start_time),
+            current_time(_app_start_time) {}
 
     void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext& rc) {
         if (processed == 0) {
@@ -79,9 +79,9 @@ public:
      ~Splitter_Functor() {
          /*if (processed != 0) {
              cout << "[Splitter] replica " << replica_id + 1 << "/" << parallelism
-                  << ", execution time: " << (current_time - start_time) / 1000000L
+                  << ", execution time: " << (current_time - app_start_time) / 1000000L
                   << " s, processed: " << processed << " lines (" << words << " words)"
-                  << ", bandwidth: " << words / ((current_time - start_time) / 1000000L)
+                  << ", bandwidth: " << words / ((current_time - app_start_time) / 1000000L)
                   << " words/s" << endl;
          }*/
      }

@@ -148,13 +148,13 @@ int main(int argc, char* argv[]) {
             .withName(source_name)
             .build();
 
-    Splitter_Functor splitter_functor;
+    Splitter_Functor splitter_functor(app_start_time);
     FlatMap splitter = FlatMap_Builder(splitter_functor)
             .withParallelism(splitter_par_deg)
             .withName(splitter_name)
             .build();
 
-    Counter_Functor counter_functor;
+    Counter_Functor counter_functor(app_start_time);
     Accumulator counter = Accumulator_Builder(counter_functor)
             .withParallelism(counter_par_deg)
             .withName(counter_name)

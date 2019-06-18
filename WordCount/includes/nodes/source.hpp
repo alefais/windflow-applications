@@ -1,7 +1,7 @@
 /**
  *  @file    source.hpp
  *  @author  Alessandra Fais
- *  @date    17/06/2019
+ *  @date    18/06/2019
  *
  *  @brief Source node that generates the input stream
  *
@@ -35,7 +35,6 @@ private:
 
     // time variables
     unsigned long app_start_time;   // application start time
-    unsigned long start_time;       // source start time
     unsigned long current_time;
     unsigned long interval;
 
@@ -72,10 +71,7 @@ public:
             generated_tuples(0)
     {
         dataset = _dataset;
-
-        // initialize time variables
         interval = 1000000L; // 1 second (microseconds)
-        start_time = current_time_usecs();
     }
 
     /**
@@ -104,7 +100,7 @@ public:
         next_tuple_idx = (next_tuple_idx + 1) % dataset.size();   // index of the next tuple to be sent (if any)
 
         // EOS reached
-        if (current_time - start_time >= app_run_time && next_tuple_idx == 0) {
+        if (current_time - app_start_time >= app_run_time && next_tuple_idx == 0) {
             /*cout << "[Source] execution time: " << (current_time - start_time) / 1000000L
                  << " s, generations: " << generations
                  << ", generated: " << generated_tuples
