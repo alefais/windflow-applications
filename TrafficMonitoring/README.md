@@ -23,7 +23,11 @@ The city can be selected by setting the `_monitored_city` parameter and the data
 <!--
 * Run the version with Keyed Farm operator specifying the same parallelism degree for all the nodes in the system and the generation rate (expressed in tuple/s): <br> `./main_keyfarm --file ~/data/app/sd/sensors.dat --pardeg 2 --rate 1000000`
 -->
-<b>NB:</b> Running the application as `./main_map --help` <!-- or as `./main_keyfarm --help`--> visualizes all the parameter options.
+<b>NB:</b> Running the application as `./main_map --help` 
+<!-- 
+	or as `./main_keyfarm --help`
+--> 
+visualizes all the parameter options.
 
 <b>NB:</b> It is possible to set `FF_BOUNDED_BUFFER` FastFlow macro in the provided Makefile in order to use bounded queues instead of the default unbounded ones.
 
