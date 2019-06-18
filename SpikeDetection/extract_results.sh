@@ -15,9 +15,9 @@ do
     NDET_MAX=$((NTHREADS-nsource))
     for ndet in $(seq 1 $NDET_MAX);
     do
-        printf "extract from tests/output_fd60s_map_bounded/main_$nsource-$ndet.log\n\n"
+        printf "extract from tests/output_60s_map_bounded/main_$nsource-$ndet.log\n\n"
 
-        grep "\[SUMMARY\] bandwidth" tests/output_fd60s_map_bounded/main_$nsource-$ndet.log | awk  -F'[, ]' '{ print $4 }' >> tests/output_fd60s_map_bounded/bandwidth.txt
-	    grep "\[SUMMARY\] average latency" tests/output_fd60s_map_bounded/main_$nsource-$ndet.log | awk  -F'[, ]' '{ print $7 }' >> tests/output_fd60s_map_bounded/latency.txt
+        grep "\[SUMMARY\] bandwidth" tests/output_60s_map_bounded/main_$nsource-$ndet.log | awk  -F'[, ]' '{ print $3 }' >> tests/output_60s_map_bounded/bandwidth.txt
+	    grep "\[SUMMARY\] average latency" tests/output_60s_map_bounded/main_$nsource-$ndet.log | awk  -F'[, ]' '{ print $6 }' >> tests/output_60s_map_bounded/latency.txt
     done
 done

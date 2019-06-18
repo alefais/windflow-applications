@@ -8,8 +8,8 @@
 if [ ! -d tests ]; then
     mkdir tests
 fi
-if [ ! -d tests/output_fd60s_map_bounded ]; then
-    mkdir tests/output_fd60s_map_bounded
+if [ ! -d tests/output_60s_map_bounded ]; then
+    mkdir tests/output_60s_map_bounded
 fi
 
 #################################################### run tests #########################################################
@@ -29,7 +29,7 @@ do
     do
         printf "\ntest_map --nsource $nsource --naverage $ndet --ndetector $ndet --nsink $ndet\n\n"
 
-        ./main_map --nsource $nsource --naverage $ndet --ndetector $ndet --nsink $ndet --rate -1 | tee ../tests/output_fd60s_map_bounded/main_$nsource-$ndet.log
+        ./main_map --nsource $nsource --naverage $ndet --ndetector $ndet --nsink $ndet --rate -1 | tee ../tests/output_60s_map_bounded/main_$nsource-$ndet.log
     done
 done
 
