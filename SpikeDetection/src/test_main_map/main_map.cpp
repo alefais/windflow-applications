@@ -209,14 +209,14 @@ int main(int argc, char* argv[]) {
             .withName(source_name)
             .build();
 
-    Average_Calculator_Map_Functor avg_calc_functor;
+    Average_Calculator_Map_Functor avg_calc_functor(app_start_time);
     Map average_calculator = Map_Builder(avg_calc_functor)
             .withParallelism(average_par_deg)
             .withName(avg_calc_name)
             .enable_KeyBy()
             .build();
 
-    Detector_Functor detector_functor;
+    Detector_Functor detector_functor(app_start_time);
     Filter detector = Filter_Builder(detector_functor)
             .withParallelism(detector_par_deg)
             .withName(detector_name)

@@ -27,7 +27,7 @@ private:
     size_t outliers;        // spikes counter
 
     // time variables
-    unsigned long start_time;
+    unsigned long app_start_time;
     unsigned long current_time;
 
     // runtime information
@@ -39,11 +39,11 @@ public:
     /**
      *  @brief Constructor
      */
-    Detector_Functor(): processed(0), outliers(0) {
-        // initialize time variables
-        start_time = current_time_usecs();
-        current_time = start_time;
-    }
+    Detector_Functor(const unsigned long _app_start_time):
+            processed(0),
+            outliers(0),
+            app_start_time(_app_start_time),
+            current_time(_app_start_time) {}
 
     /**
      *  @brief Detect spikes
@@ -70,10 +70,10 @@ public:
     ~Detector_Functor() {
         /*if (processed != 0) {
             cout << "[Detector] replica " << replica_id + 1 << "/" << parallelism
-                 << ", execution time: " << (current_time - start_time) / 1000000L
+                 << ", execution time: " << (current_time - app_start_time) / 1000000L
                  << " s, processed: " << processed
                  << ", outliers: " << outliers
-                 << ", bandwidth: " << processed / ((current_time - start_time) / 1000000L)
+                 << ", bandwidth: " << processed / ((current_time - app_start_time) / 1000000L)
                  << endl;
         }*/
     }
