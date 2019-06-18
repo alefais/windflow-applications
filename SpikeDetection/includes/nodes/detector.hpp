@@ -51,7 +51,7 @@ public:
      *  @param t input tuple
      *  @return true if a spike has been found, false otherwise
      */
-    bool operator()(tuple_t& t, RuntimeContext rc) {
+    bool operator()(tuple_t& t, RuntimeContext& rc) {
         if (processed == 0) {
             parallelism = rc.getParallelism();
             replica_id = rc.getReplicaIndex();

@@ -107,7 +107,7 @@ public:
      *  @param t input item to be updated and transmitted in output
      *  @param rc runtime context used to access to the parallelism degree and replica index
      */
-    void operator()(tuple_t& t, RuntimeContext rc) {
+    void operator()(tuple_t& t, RuntimeContext& rc) {
         if (processed == 0) {
             parallelism = rc.getParallelism();
             replica_id = rc.getReplicaIndex();
