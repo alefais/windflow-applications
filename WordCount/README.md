@@ -1,7 +1,7 @@
 # Compile and run WordCount
 
 ## Compile
-From inside the root directory `WordCount` run `make` in order to compile the tests (at the end of the compilation, the executable file can be found in `WordCount/bin`).
+From inside the root directory `WordCount/` run `make` in order to compile the tests (at the end of the compilation, the executable file can be found in `WordCount/bin`).
 
 ## Run
 WordCount application can be run passing some arguments:<ul><li>`--nsource` source parallelism degree</li><li>`--nsplitter` line splitter node parallelism degree</li><li>`--ncounter` word counter node parallelism degree</li><li>`--nsink` sink parallelism degree</li><li>`--rate` source generation rate (-1 to generate at the max possible rate)</li></ul> Instead of specifying the parallelism degree for each single node, it's possible to use `--pardeg` parallelism degree in order to assign the same parallelism degree to all the nodes in the topology.
@@ -12,6 +12,8 @@ WordCount application can be run passing some arguments:<ul><li>`--nsource` sour
 * Run the application specifying the same parallelism degree for all the nodes in the system and the generation rate (expressed in tuple/s), where -1 means the maximum possible rate: <br> `./main --pardeg 1 --rate -1`
 
 <b>NB:</b> Running the application as `./main --help` visualizes all the parameter options.
+
+<b>NB:</b> The path of the dataset input file containing a text (absolute or relative to `WordCount/` directory) is defined and can be modified in [constants.hpp](https://github.com/alefais/windflow-applications/blob/master/WordCount/includes/util/constants.hpp).
 
 <b>NB:</b> It is possible to set `FF_BOUNDED_BUFFER` FastFlow macro in the provided Makefile in order to use bounded queues instead of the default unbounded ones.
 
