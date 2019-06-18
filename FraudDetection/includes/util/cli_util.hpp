@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    05/06/2019
+ * @date    18/06/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -71,11 +71,11 @@ inline void print_app_descr(const string& f, size_t source, size_t pred, size_t 
 }
 
 inline void print_summary(const atomic<long>& sent_tuples, double elapsed_time_seconds, double tot_average_latency) {
-    cout << "[SUMMARY] generated " << sent_tuples << endl;
-    cout << "[SUMMARY] elapsed time (seconds) " << elapsed_time_seconds << endl;
-    cout << "[SUMMARY] bandwidth (tuples/second) " << sent_tuples / elapsed_time_seconds << endl;
-    cout << "[SUMMARY] average latency (useconds) " << tot_average_latency
-         << " , (ms) " << fixed << setprecision(5) << tot_average_latency / (1000.0) <<  endl;
+    cout << "[SUMMARY] generated " << sent_tuples << " (tuples)" << endl;
+    cout << "[SUMMARY] elapsed time " << elapsed_time_seconds << " (seconds)" << endl;
+    cout << "[SUMMARY] bandwidth " << sent_tuples / elapsed_time_seconds << " (tuples/second)" << endl;
+    cout << "[SUMMARY] average latency " << tot_average_latency << " (useconds) "
+         << fixed << setprecision(5) << tot_average_latency / (1000.0) << " (ms) " <<  endl;
 }
 
 // information about the model (testing)
