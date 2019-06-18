@@ -1,7 +1,7 @@
 /**
  *  @file    map_matcher.hpp
  *  @author  Alessandra Fais
- *  @date    14/06/2019
+ *  @date    18/06/2019
  *
  *  @brief Node that implements map matching
  *
@@ -37,15 +37,14 @@ private:
     Road_Grid_List road_grid_list;               // object containing all the geometric features of the shapefile and used to do map matching
     unordered_map<size_t, uint64_t> key_occ;     // contains the number of occurrences of each key road_id
 
-    // geographic model parameters: shapefile and city bounding box
-    const string shapefile_path = (_monitored_city == DUBLIN) ? _dublin_shapefile : _beijing_shapefile;
-    const double max_lon = (_monitored_city == DUBLIN) ? dublin_lon_max : beijing_lon_max;
-    const double min_lon = (_monitored_city == DUBLIN) ? dublin_lon_min : beijing_lon_min;
-    const double max_lat = (_monitored_city == DUBLIN) ? dublin_lat_max : beijing_lat_max;
-    const double min_lat = (_monitored_city == DUBLIN) ? dublin_lat_min : beijing_lat_min;
+    // city bounding box
+    double max_lon;
+    double min_lon;
+    double max_lat;
+    double min_lat;
 
     // time variables
-    unsigned long start_time;
+    unsigned long app_start_time;
     unsigned long current_time;
 
     // runtime information
@@ -57,10 +56,19 @@ public:
     /**
      *  @brief Constructor
      */
-    Map_Matcher_Functor(): road_grid_list(shapefile_path), processed(0), valid_points(0), emitted(0) {
-        // initialize time variables
-        start_time = current_time_usecs();
-        current_time = start_time;
+    Map_Matcher_Functor(Road_Grid_List& _road_grid_list, const unsigned long _app_start_time):
+                road_grid_list(_road_grid_list),
+                processed(0),
+                valid_points(0),
+                emitted(0),
+                app_start_time(_app_start_time),
+                current_time(_app_start_time)
+    {
+        // set city bounding box
+        max_lon = (_monitored_city == DUBLIN) ? dublin_lon_max : beijing_lon_max;
+        min_lon = (_monitored_city == DUBLIN) ? dublin_lon_min : beijing_lon_min;
+        max_lat = (_monitored_city == DUBLIN) ? dublin_lat_max : beijing_lat_max;
+        min_lat = (_monitored_city == DUBLIN) ? dublin_lat_min : beijing_lat_min;
     }
 
     /**
@@ -71,7 +79,7 @@ public:
      *  @param t input tuple
      *  @param rc runtime context used to access to the parallelism degree and replica index
      */
-    void operator()(tuple_t& t, Shipper<result_t>& shipper, RuntimeContext rc) {
+    void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext& rc) {
         if (processed == 0) {
             parallelism = rc.getParallelism();
             replica_id = rc.getReplicaIndex();
@@ -97,7 +105,7 @@ public:
                 shipper.push(r);
                 emitted++;
 
-                print_result("[MapMatcher] Result: ", t)
+                //print_result("[MapMatcher] Result: ", r);
             }
             valid_points++;
         }
@@ -105,23 +113,26 @@ public:
         current_time = current_time_usecs();
     }
 
+    /**
+     *  @brief Destructor.
+     */
     ~Map_Matcher_Functor() {
         if (processed != 0) {
             cout << "[MapMatcher] replica " << replica_id + 1 << "/" << parallelism
-                 << ", execution time: " << (current_time - start_time) / 1000000L
+                 << ", execution time: " << (current_time - app_start_time) / 1000000L
                  << " s, processed: " << processed
-                 << ", valid: " << valid_points
-                 << ", emitted: " << emitted
-                 << ", bandwidth: " << processed / ((current_time - start_time) / 1000000L)
-                 << ", #keys: " << key_occ.size()
-                 << endl
+                 << ", valid (inside city box): " << valid_points
+                 << ", emitted (#all_keys): " << emitted
+                 << ", bandwidth: " << processed / ((current_time - app_start_time) / 1000000L)
+                 << ", #dif_keys: " << key_occ.size()
+                 << endl;
 
             // print road_id keys and number of occurrences
-                 << ", keys: "
+            /*     << ", keys: "
                  << endl;
             for (auto k : key_occ) {
                 cout << "key: " << k.first << " id: " << k.second << endl;
-            }
+            }*/
         }
     }
 };

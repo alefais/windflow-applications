@@ -1,7 +1,7 @@
 /**
  *  @file    sink.hpp
  *  @author  Alessandra Fais
- *  @date    05/06/2019
+ *  @date    14/06/2019
  *
  *  @brief Sink node that receives and prints the results
  */
@@ -13,7 +13,7 @@
 #include <ff/ff.hpp>
 #include "../../includes/util/atomic_double.hpp"
 #include "../util/cli_util.hpp"
-#include "../util/tuple.hpp"
+#include "../util/result.hpp"
 
 extern Atomic_Double average_latency_sum;
 extern atomic<int> sink_zero_processed;
@@ -64,14 +64,14 @@ public:
      *
      * @param t input tuple
      */
-    void operator()(optional<tuple_t>& t) {
-        if (t) {
-            //print_tuple("[Sink] received tuple: ", *t);
+    void operator()(optional<result_t>& r) {
+        if (r) {
+            //print_result("[Sink] received tuple: ", *r);
 
             // evaluate tuple latency (always evaluate latency with FF_BOUNDED_BUFFER set)
             //if (rate != -1) {
 
-            unsigned long tuple_latency = current_time_usecs() - (app_start_time + (*t).ts);
+            unsigned long tuple_latency = current_time_usecs() - (app_start_time + (*r).ts);
             tuple_latencies.insert(tuple_latencies.end(), tuple_latency);
 
             //}
