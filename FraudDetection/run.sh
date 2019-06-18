@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # @author   Alessandra Fais
-# @date     05/06/2019
+# @date     18/06/2019
 
 ############################################## create test directories #################################################
 
@@ -21,7 +21,7 @@ printf "Running tests light source bounded buffer\n"
 NCORES=16
 NTHREADS=32
 
-NSOURCE_MAX=16
+NSOURCE_MAX=5
 for nsource in $(seq 1 $NSOURCE_MAX);
 do
     NPRED_MAX=$((NTHREADS-nsource))
@@ -29,22 +29,6 @@ do
     do
         printf "\ntest_light_source --nsource $nsource --npred $npred --nsink $npred\n\n"
 
-        ./main_light_source --file ~/data/app/fd/credit-card.dat --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_fd60s_light_bounded/main_$nsource-$npred.log
+        ./main_light_source --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_fd60s_light_bounded/main_$nsource-$npred.log
     done
-done
-
-############################################### extract results ########################################################
-
-printf "Extracting bandwidth and latency values\n"
-
-#for filename in ../tests/output_fd60s_light_bounded/*.log; do
-#    if [ ! -e "$filename" ]; then continue; fi
-#    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' | tee ../tests/output_fd60s_light_bounded/$(basename "$filename" .log)_bw.txt
-#	grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' | tee ../tests/output_fd60s_light_bounded/$(basename "$filename" .log)_latency.txt
-#done
-
-for filename in ../tests/output_fd60s_light_bounded/*.log; do
-    if [ ! -e "$filename" ]; then continue; fi
-    grep "\[SUMMARY\] bandwidth" "$filename" | awk  -F'[, ]' '{ print $4 }' >> ../tests/output_fd60s_light_bounded/bandwidth.txt
-	grep "\[SUMMARY\] average latency" "$filename" | awk  -F'[, ]' '{ print $5 }' >> ../tests/output_fd60s_light_bounded/latency.txt
 done
