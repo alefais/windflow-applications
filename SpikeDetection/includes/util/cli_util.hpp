@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    05/06/2019
+ * @date    18/06/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -27,7 +27,6 @@ typedef enum { NONE, REQUIRED } opt_arg;    // an option can require one argumen
 
 const struct option long_opts[] = {
         {"help", NONE, 0, 'h'},
-        {"file", REQUIRED, 0, 'f'},         // input file path
         {"nsource", REQUIRED, 0, 's'},      // pipe start (source) parallelism degree
         {"naverage", REQUIRED, 0, 'a'},     // moving average calculator parallelism degree
         {"ndetector", REQUIRED, 0, 'd'},    // spike detector parallelism degree
@@ -39,8 +38,8 @@ const struct option long_opts[] = {
 
 // how to run the application
 const string intro = "Run SpikeDetection choosing one of the following ways:";
-const string run_mode1 = " --file [file_path] --nsource [source_par_deg] --naverage [avg_calc_par_deg] --ndetector [detector_par_deg] --nsink [sink_par_deg] --rate [stream_gen_rate]";
-const string run_mode2 = " --file [file_path] --pardeg [par_deg_for_all_nodes] --rate [stream_gen_rate]";
+const string run_mode1 = " --nsource [source_par_deg] --naverage [avg_calc_par_deg] --ndetector [detector_par_deg] --nsink [sink_par_deg] --rate [stream_gen_rate]";
+const string run_mode2 = " --pardeg [par_deg_for_all_nodes] --rate [stream_gen_rate]";
 const string run_help = " --help";
 
 // information about application

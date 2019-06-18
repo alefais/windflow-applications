@@ -1,7 +1,7 @@
 /**
  *  @file    main_map.cpp
  *  @author  Alessandra Fais
- *  @date    04/06/2019
+ *  @date    18/06/2019
  *
  *  @brief main of the SpikeDetection application
  */
@@ -137,19 +137,18 @@ int main(int argc, char* argv[]) {
     sink_zero_processed = 0;
 
     /* Program options:
-     * - case (argc == 13):
-     * specified parameters are --file, --nsource, --naverage, --ndetector, --nsink, --rate (and their arguments)
-     * - case (argc == 7):
-     * specified parameters are --file, --pardeg, --rate (and their arguments)
+     * - case (argc == 11):
+     * specified parameters are --nsource, --naverage, --ndetector, --nsink, --rate (and their arguments)
+     * - case (argc == 5):
+     * specified parameters are --pardeg, --rate (and their arguments)
      * - case (argc == 2):
      * specified parameter is --help (with no argument)
      */
     opterr = 1;     // turn on/off getopt error messages
     if (argc == 13) {
-        while ((option = getopt_long(argc, argv, "f:s:a:d:e:r:", long_opts, &index)) != -1) {
+        while ((option = getopt_long(argc, argv, "s:a:d:e:r:", long_opts, &index)) != -1) {
+            file_path = _input_file;
             switch (option) {
-                case 'f': file_path = optarg;
-                    break;
                 case 's': source_par_deg = atoi(optarg);
                     break;
                 case 'a': average_par_deg = atoi(optarg);
@@ -166,10 +165,9 @@ int main(int argc, char* argv[]) {
             }
         }
     } else if (argc == 7) {
-        while ((option = getopt_long(argc, argv, "f:n:r:", long_opts, &index)) != -1) {
+        while ((option = getopt_long(argc, argv, "n:r:", long_opts, &index)) != -1) {
+            file_path = _input_file;
             switch (option) {
-                case 'f': file_path = optarg;
-                    break;
                 case 'n':
                     source_par_deg = atoi(optarg);
                     average_par_deg = atoi(optarg);
