@@ -15,7 +15,7 @@ TrafficMonitoring application can be run passing some arguments:<ul><li>`--nsour
 Two datasets are currently supported:
 * Beijing city taxi-traces
 * Dublin city bus-traces
-<br>
+
 The city can be selected by setting the `_monitored_city` parameter and the dataset file path in in [constants.hpp](https://github.com/alefais/windflow-applications/blob/master/TrafficMonitoring/includes/util/constants.hpp). Default values are `_monitored_city = BEIJING` and `_beijing_input_file = "../data/taxi-traces.csv"`.
 
 ### Execution examples:
