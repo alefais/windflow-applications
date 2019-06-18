@@ -59,7 +59,7 @@ public:
      *  @param shipper shipper object used for the delivery of results
      *  @param rc runtime context used to access to the parallelism degree and replica index
      */
-    void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext rc) {
+    void operator()(const tuple_t& t, Shipper<result_t>& shipper, RuntimeContext& rc) {
         if (processed == 0) {
             parallelism = rc.getParallelism();
             replica_id = rc.getReplicaIndex();
