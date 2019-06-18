@@ -18,6 +18,6 @@ do
         printf "extract from tests/output_fd60s_map_bounded/main_$nsource-$nsplit-$nsource.log\n\n"
 
         grep "\[SUMMARY\] bandwidth" tests/output_fd60s_map_bounded/main_$nsource-$nsplit-$nsource.log | awk  -F'[, ]' '{ print $5 }' >> tests/output_fd60s_map_bounded/bandwidth.txt
-	    grep "\[SUMMARY\] average latency" tests/output_fd60s_map_bounded/main_$nsource-$nsplit-$nsource.log | awk  -F'[, ]' '{ print $7 }' >> tests/output_fd60s_map_bounded/latency.txt
+	    grep "\[SUMMARY\] average latency" tests/output_fd60s_map_bounded/main_$nsource-$nsplit-$nsource.log | awk  -F'[, ]' '{ print $6 }' >> tests/output_fd60s_map_bounded/latency.txt
     done
 done
