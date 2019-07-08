@@ -1,7 +1,7 @@
 /**
  *  @file    road_grid_list.hpp
  *  @author  Alessandra Fais
- *  @date    17/06/2019
+ *  @date    07/07/2019
  *
  *  @brief Definition of class Road_Grid_List used to read the shapefile and compute the
  *         road IDs corresponding to the GPS coordinates received from the vehicles.
@@ -59,10 +59,10 @@ public:
 
         // feature definition object associated with the layer contains the definitions of all the fields
         OGRFeatureDefn *feature_def = roads_layer->GetLayerDefn();
-        OGRFeature *feature;
+        OGRFeature *feature = roads_layer->GetNextFeature();
 
         // iterate through all the features in the "roads layer (return NULL when no more features are available)
-        while ((feature = roads_layer->GetNextFeature()) != nullptr) {
+        while (feature != nullptr) {
             // extract the geometry from the feature
             OGRGeometry *geometry = feature->GetGeometryRef();
             if (geometry != nullptr) {
@@ -70,10 +70,10 @@ public:
                     OGRLineString *line = geometry->toLineString();
                     int length = line->getNumPoints();
 
-                    OGRPoint *p1 = new OGRPoint();
-                    OGRPoint *p2 = new OGRPoint();
-                    line->getPoint(0, p1);
-                    line->getPoint(length - 1, p2);
+                    unique_ptr<OGRPoint> p1(new OGRPoint());
+                    unique_ptr<OGRPoint> p2(new OGRPoint());
+                    line->getPoint(0, p1.get());
+                    line->getPoint(length - 1, p2.get());
                     double center_x = (p1->getX() + p2->getX()) / 2 * 10;
                     double center_y = (p1->getY() + p2->getY()) / 2 * 10;
                     ostringstream map_ID;
@@ -88,6 +88,7 @@ public:
                         grid_list.at(map_ID.str()).push_back(feature);
                 }
             }
+            feature = roads_layer->GetNextFeature();
         }
         OGRFeature::DestroyFeature(feature); // method GetNextFeature() returns a copy of the feature that must be freed
         GDALClose(dataset);
@@ -118,11 +119,10 @@ public:
         for (auto entry : grid_list) {
             grid_count++;
             string key = entry.first;
-            vector<OGRFeature*> road_list = entry.second;
             // cout << "Grid list entry " << grid_count << " key " << key << " vs " << map_ID.str() << endl;
 
             if (key == map_ID.str()) {
-                for (auto feature : road_list) {
+                for (auto feature : entry.second) { // entry.second is a vector<OGRFeature*> (the road_list)
                     road_count++;
                     // retrieve the attribute field road_id of the feature
                     uint64_t road_ID = feature->GetFieldAsInteger64("osm_id");
@@ -153,12 +153,16 @@ public:
                     Polygon road(points);
                     if (road.match_to_road_line(point, width, &last_min_distance, road_ID, &last_min_road_ID))
                         return road_ID;
+
+                    for (auto p : points)
+                        delete p;
                 }
                 if (last_min_distance < sqrt((width * width) + (10 * 10)))
                     return last_min_road_ID;
                 else
                     return -1;
             }
+
         }
         return -1;
     }
