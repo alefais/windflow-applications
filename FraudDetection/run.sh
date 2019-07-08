@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # @author   Alessandra Fais
-# @date     18/06/2019
+# @date     08/07/2019
 
 ############################################## create test directories #################################################
 
@@ -16,7 +16,7 @@ fi
 
 cd bin
 
-printf "Running tests light source bounded buffer\n"
+printf "Running tests light source, bounded buffer\n"
 
 NCORES=16
 NTHREADS=32
@@ -27,8 +27,8 @@ do
     NPRED_MAX=$((NTHREADS-nsource))
     for npred in $(seq 1 $NPRED_MAX);
     do
-        printf "\ntest_light_source --nsource $nsource --npred $npred --nsink $npred\n\n"
+        printf "\ntest_light_source --nsource $nsource --npred $npred --nsink 1\n\n"
 
-        ./main_light_source --nsource $nsource --npredictor $npred --nsink $npred --rate -1 | tee ../tests/output_60s_light_bounded/main_$nsource-$npred.log
+        ./main_light_source --nsource $nsource --npredictor $npred --nsink 1 --rate -1 | tee ../tests/output_60s_light_bounded/main_$nsource-$npred-1.log
     done
 done
