@@ -1,7 +1,7 @@
 /**
  *  @file    main.cpp
  *  @author  Alessandra Fais
- *  @date    17/06/2019
+ *  @date    08/07/2019
  *
  *  @brief main of the WordCount application
  */
@@ -28,6 +28,7 @@ using namespace std;
 
 vector<tuple_t> dataset;                    // contains all the input tuples in memory
 atomic<long> total_bytes;                   // total number of bytes processed by the system
+atomic<long> total_words;                   // total number of words processed by the system
 Atomic_Double average_latency_sum;          // sum of the average latency values measured in each of the sink's replicas
 atomic<int> sink_zero_processed;            // number of sink's replicas that processed zero tuples
 
@@ -169,9 +170,9 @@ int main(int argc, char* argv[]) {
 
     /// create the multi pipe
     MultiPipe topology(topology_name);
-    topology.add_source(source);
-    topology.add(splitter);
-    topology.add(counter);       // in order to exploit chaining, counter and sink must have the same parallelism degree
+    topology.add_source(source);   // in order to exploit chaining, source and splitter must have the same parallelism degree
+    topology.chain(splitter);
+    topology.add(counter);         // in order to exploit chaining, counter and sink must have the same parallelism degree
     topology.chain_sink(sink);
 
     /// evaluate topology execution time
