@@ -1,7 +1,7 @@
 /**
- *  @file    main_light_source.cpp
+ *  @file    main_light_source_chained.cpp
  *  @author  Alessandra Fais
- *  @date    18/06/2019
+ *  @date    09/07/2019
  *
  *  @brief main of the FraudDetection application
  *
