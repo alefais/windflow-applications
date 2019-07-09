@@ -1,11 +1,14 @@
 # Author: Alessandra Fais
-# Date: 07/05/2019
+# Date: 09/07/2019
 
 all:
 	$(MAKE) -C src
 
-test_light_source:
-	$(MAKE) test_light_source -C src
+test_light_source_chained:
+	$(MAKE) test_light_source_chained -C src
+
+test_light_source_unchained:
+	$(MAKE) test_light_source_unchained -C src
 
 test_heavy_source:
 	$(MAKE) test_heavy_source -C src
@@ -20,4 +23,4 @@ clean:
 	$(MAKE) clean -C src
 
 .DEFAULT_GOAL := all
-.PHONY: all test_light_source test_heavy_source test_markov_model test_model_predictor clean
+.PHONY: all test_light_source_chained test_light_source_unchained test_heavy_source test_markov_model test_model_predictor clean
