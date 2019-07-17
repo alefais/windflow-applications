@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    16/07/2019
+ * @date    17/07/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -78,8 +78,8 @@ inline void print_summary(double total_MB, long total_words, double elapsed_time
     cout << "[SUMMARY] generated " << total_MB << " (MB) " << total_words << " (words)" << endl;
     cout << "[SUMMARY] elapsed time " << elapsed_time_seconds << " (seconds)" << endl;
     cout << "[SUMMARY] bandwidth "
-         << total_MB / elapsed_time_seconds << " (MB/second) "
-         << total_words / elapsed_time_seconds << " (words/second) "<< endl;
+         << total_MB / elapsed_time_seconds << " (MB/s) "
+         << total_words / elapsed_time_seconds << " (words/s) " << endl;
     cout << "[SUMMARY] average latency "
          << fixed << setprecision(5) << tot_average_latency << " (ms) " <<  endl;
 }
