@@ -36,13 +36,13 @@ do
         then
             printf "${BLUE}windflow_wordcount --nsource $nsource --nsplitter $nsource --ncounter 1 --nsink 1 --rate -1\n\n${NORMAL}"
 
-            ./main --nsource $nsource --nsplitter $nsource --ncounter 1 --nsink 1 --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-1-1_-1.log
+            ./main_chained --nsource $nsource --nsplitter $nsource --ncounter 1 --nsink 1 --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-1-1_-1.log
 
         elif [ $ncount -le $NCOUNT_MAX ];
         then
             printf "${BLUE}windflow_wordcount --nsource $nsource --nsplitter $nsource --ncounter $ncount --nsink $ncount --rate -1\n\n${NORMAL}"
 
-            ./main --nsource $nsource --nsplitter $nsource --ncounter $ncount --nsink $ncount --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-$ncount-$ncount_-1.log
+            ./main_chained --nsource $nsource --nsplitter $nsource --ncounter $ncount --nsink $ncount --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-$ncount-$ncount_-1.log
         fi
     done
 done
