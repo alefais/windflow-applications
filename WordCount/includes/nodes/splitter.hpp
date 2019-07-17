@@ -1,7 +1,7 @@
 /**
  *  @file    splitter.hpp
  *  @author  Alessandra Fais
- *  @date    18/06/2019
+ *  @date    16/07/2019
  *
  *  @brief Node that splits each received text line into single words
  */
@@ -77,13 +77,13 @@ public:
     }
 
      ~Splitter_Functor() {
-         /*if (processed != 0) {
-             cout << "[Splitter] replica " << replica_id + 1 << "/" << parallelism
+         if (processed != 0) {
+             /*cout << "[Splitter] replica " << replica_id + 1 << "/" << parallelism
                   << ", execution time: " << (current_time - app_start_time) / 1000000L
                   << " s, processed: " << processed << " lines (" << words << " words)"
                   << ", bandwidth: " << words / ((current_time - app_start_time) / 1000000L)
-                  << " words/s" << endl;
-         }*/
+                  << " words/s" << endl;*/
+         }
      }
 };
 

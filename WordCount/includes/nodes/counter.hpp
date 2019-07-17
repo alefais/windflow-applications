@@ -1,7 +1,7 @@
 /**
  *  @file    counter.hpp
  *  @author  Alessandra Fais
- *  @date    18/06/2019
+ *  @date    16/07/2019
  *
  *  @brief Node that counts the occurrences of each word and the number of bytes processed
  */
@@ -45,6 +45,7 @@ public:
      */
      Counter_Functor(const unsigned long _app_start_time):
             bytes(0L),
+            processed(0),
             app_start_time(_app_start_time),
             current_time(_app_start_time) {}
 
@@ -55,25 +56,24 @@ public:
          }
          //print_result("[Counter] Received tuple: ", in);
 
-         out.bytes += (in.key).length();    // size of the string word (bytes)
          out.key = in.key;
          out.id++;                          // number of occurrences of the string word
          out.ts = in.ts;
 
-         bytes += out.bytes;
+         bytes += (in.key).length();        // size of the string word (bytes)
          processed++;
          current_time = current_time_usecs();
      }
 
      ~Counter_Functor() {
-         /*if (processed != 0) {
-             cout << "[Counter] replica " << replica_id + 1 << "/" << parallelism
+         if (processed != 0) {
+             /*cout << "[Counter] replica " << replica_id + 1 << "/" << parallelism
                   << ", execution time: " << (current_time - app_start_time) / 1000000L
-                  << " s, processed: " << processed << " words (" << (bytes / 1048576) << " MB)"
+                  << " s, processed: " << processed << " words (" << ((double)bytes / 1048576) << " MB)"
                   << ", bandwidth: " << processed / ((current_time - app_start_time) / 1000000L)
-                  << " (words/s) " << (bytes / 1048576) / ((current_time - app_start_time) / 1000000L)
-                  << " (MB/s)" << endl;
-         }*/
+                  << " (words/s) " << ((double)bytes / 1048576) / ((double)(current_time - app_start_time) / 1000000L)
+                  << " (MB/s)" << endl;*/
+         }
      }
 };
 
