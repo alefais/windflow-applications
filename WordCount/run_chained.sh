@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # @author   Alessandra Fais
-# @date     08/07/2019
+# @date     16/07/2019
 
 ############################################## create test directories #################################################
 
@@ -16,20 +16,34 @@ fi
 
 cd bin
 
-printf "Running tests map, bounded buffer, chained (source + splitter and counter + sink)\n"
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+BLUE=$(tput setaf 4)
+MAGENTA=$(tput setaf 5)
+CYAN=$(tput setaf 6)
+NORMAL=$(tput sgr0)
 
-NCORES=16
+printf "${GREEN}Running WindFlow tests for WordCount application with bounded buffer and chaining.\n${NORMAL}"
+
 NTHREADS=32
-
-NSOURCE_MAX=6
+NSOURCE_MAX=5
 for nsource in $(seq 1 $NSOURCE_MAX);
 do
     NCOUNT_MAX=$((NTHREADS-nsource))
-    for ncount in $(seq 1 $NCOUNT_MAX);
+    for ncount in {0..32..2};
     do
-        printf "\ntest_map --nsource $nsource --nsplitter $nsource --ncounter $ncount --nsink $ncount\n\n"
+        if [ $ncount -eq 0 ];
+        then
+            printf "${BLUE}windflow_wordcount --nsource $nsource --nsplitter $nsource --ncounter 1 --nsink 1 --rate -1\n\n${NORMAL}"
 
-        ./main --nsource $nsource --nsplitter $nsource --ncounter $ncount --nsink $ncount --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-$ncount-$ncount.log
+            ./main --nsource $nsource --nsplitter $nsource --ncounter 1 --nsink 1 --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-1-1_-1.log
+
+        elif [ $ncount -le $NCOUNT_MAX ];
+        then
+            printf "${BLUE}windflow_wordcount --nsource $nsource --nsplitter $nsource --ncounter $ncount --nsink $ncount --rate -1\n\n${NORMAL}"
+
+            ./main --nsource $nsource --nsplitter $nsource --ncounter $ncount --nsink $ncount --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-$ncount-$ncount_-1.log
+        fi
     done
 done
 
