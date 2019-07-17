@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    08/07/2019
+ * @date    16/07/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -74,17 +74,14 @@ inline void print_app_descr(string& file, size_t source, size_t splitter, size_t
          << rate_str << rate << endl;
 }
 
-inline void print_summary(long total_bytes, long total_words, double elapsed_time_seconds, double tot_average_latency) {
-    long sent_MB = total_bytes / 1048576;
-    long sent_GB = sent_MB / 1024;
-    cout << "[SUMMARY] generated " << sent_MB << " (MB) " << sent_GB << " (GB) " << total_words << " (words)" << endl;
+inline void print_summary(double total_MB, long total_words, double elapsed_time_seconds, double tot_average_latency) {
+    cout << "[SUMMARY] generated " << total_MB << " (MB) " << total_words << " (words)" << endl;
     cout << "[SUMMARY] elapsed time " << elapsed_time_seconds << " (seconds)" << endl;
     cout << "[SUMMARY] bandwidth "
-         << sent_MB / elapsed_time_seconds << " (MB/second) "
-         << sent_GB / elapsed_time_seconds << " (GB/second) "
+         << total_MB / elapsed_time_seconds << " (MB/second) "
          << total_words / elapsed_time_seconds << " (words/second) "<< endl;
-    cout << "[SUMMARY] average latency " << tot_average_latency << " (useconds) "
-         << fixed << setprecision(5) << tot_average_latency / (1000.0) << " (ms) " <<  endl;
+    cout << "[SUMMARY] average latency "
+         << fixed << setprecision(5) << tot_average_latency << " (ms) " <<  endl;
 }
 
 // information about parsed data and dataset (testing)
@@ -109,7 +106,6 @@ inline void print_tuple(const string& msg, const tuple_t& t) {
 // information about result tuple content (testing)
 inline void print_result(const string& msg, const result_t& r) {
     cout << msg
-         << r.bytes << " - "
          << r.key << " - "
          << r.id << " - "
          << r.ts << endl;
