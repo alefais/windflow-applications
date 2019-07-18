@@ -99,9 +99,9 @@ public:
                  processed(0) {}
 
     /**
-     * @brief Print results and evaluate average latency (when required)
+     * @brief Print results and evaluate latency statistics
      *
-     * @param t input tuple
+     * @param r input tuple
      */
     void operator()(optional<result_t>& r) {
         if (r) {
@@ -114,14 +114,12 @@ public:
             tuple_latencies.insert(tuple_latencies.end(), (double)tuple_latency / 1000L);       // latency (ms)
 
         } else {     // EOS
-            if (processed != 0) {
-                //cout << "[Sink] processed: " << processed << endl;
+            //cout << "[Sink] processed: " << processed << endl;
 
+            if (processed != 0) {
                 double average_latency = compute_latency_statistics();
                 average_latency_sum.fetch_add(average_latency);
             } else {
-                //cout << "[Sink] processed: " << processed << endl;
-
                 sink_zero_processed.fetch_add(1);
             }
         }
