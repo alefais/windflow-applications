@@ -1,7 +1,7 @@
 /**
- *  @file    main_map.cpp
+ *  @file    main_chained.cpp
  *  @author  Alessandra Fais
- *  @date    17/06/2019
+ *  @date    18/07/2019
  *
  *  @brief main of the SpikeDetection application
  *
