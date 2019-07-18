@@ -1,7 +1,7 @@
 /**
- *  @file    main_map.cpp
+ *  @file    main_map_unchained.cpp
  *  @author  Alessandra Fais
- *  @date    18/06/2019
+ *  @date    18/07/2019
  *
  *  @brief main of the SpikeDetection application
  */
@@ -232,8 +232,8 @@ int main(int argc, char* argv[]) {
     MultiPipe topology(topology_name);
     topology.add_source(source);
     topology.add(average_calculator);
-    topology.chain(detector);     // in order to exploit chaining, average calculator, detector and sink must have the same parallelism degree
-    topology.chain_sink(sink);
+    topology.add(detector);
+    topology.add_sink(sink);
 
     /// evaluate topology execution time
     volatile unsigned long start_time_main_usecs = current_time_usecs();
