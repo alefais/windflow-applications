@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # @author   Alessandra Fais
-# @date     16/07/2019
+# @date     18/07/2019
 
 ############################################### extract results ########################################################
 
@@ -18,32 +18,22 @@ NTHREADS=32
 NSOURCE_MAX=5
 for nsource in $(seq 1 $NSOURCE_MAX);
 do
-    for nsplit in {0..12..2};
+    for nsplit in {0..8..2};
     do
         if [ $nsplit -eq 0 ];
         then
-            printf "${BLUE}extract from tests/output_60s_bounded_unchained/main_$nsource-1-1-1_-1.log\n\n${NORMAL}"
+            printf "${BLUE}extract from tests/output_60s_bounded_unchained/main_$nsource-$nsource-$nsource-1_-1.log\n\n${NORMAL}"
 
             # bandwidth
-            grep "\[SUMMARY\] bandwidth" tests/output_60s_bounded_unchained/main_$nsource-1-1-1_-1.log | awk  -F'[, ]' '{ print $5 }' >> tests/output_60s_bounded_unchained/bandwidth.txt
+            grep "\[SUMMARY\] bandwidth" tests/output_60s_bounded_unchained/main_$nsource-$nsource-$nsource-1_-1.log | awk  -F'[, ]' '{ print $5 }' >> tests/output_60s_bounded_unchained/bandwidth.txt
 
 	        # latency
-	        grep "\[Sink\] latency" tests/output_60s_bounded_unchained/main_$nsource-1-1-1_-1.log | awk  -F'[, ]' '{ print $4 " " $6 " " $8 " " $10 " " $12 " " $14 " " $16 " " $18 }' >> tests/output_60s_bounded_unchained/latency.txt
-	        grep "\[Sink\] latency" tests/output_60s_bounded_unchained/main_$nsource-1-1-1_-1.log | awk  -F'[, ]' '{ print $4 }' >> tests/output_60s_bounded_unchained/latency_mean.txt
+	        grep "\[Sink\] latency" tests/output_60s_bounded_unchained/main_$nsource-$nsource-$nsource-1_-1.log | awk  -F'[, ]' '{ print $4 " " $6 " " $8 " " $10 " " $12 " " $14 " " $16 " " $18 }' >> tests/output_60s_bounded_unchained/latency.txt
+	        grep "\[Sink\] latency" tests/output_60s_bounded_unchained/main_$nsource-$nsource-$nsource-1_-1.log | awk  -F'[, ]' '{ print $4 }' >> tests/output_60s_bounded_unchained/latency_mean.txt
 
+        elif [ $nsplit -gt $nsource ];
+        then
             for ncount in {2..8..2};
-            do
-                printf "${BLUE}extract from tests/output_60s_bounded_unchained/main_$nsource-1-$ncount-1_-1.log\n\n${NORMAL}"
-
-                # bandwidth
-                grep "\[SUMMARY\] bandwidth" tests/output_60s_bounded_unchained/main_$nsource-1-$ncount-1_-1.log | awk  -F'[, ]' '{ print $5 }' >> tests/output_60s_bounded_unchained/bandwidth.txt
-
-                # latency
-                grep "\[Sink\] latency" tests/output_60s_bounded_unchained/main_$nsource-1-$ncount-1_-1.log | awk  -F'[, ]' '{ print $4 " " $6 " " $8 " " $10 " " $12 " " $14 " " $16 " " $18 }' >> tests/output_60s_bounded_unchained/latency.txt
-                grep "\[Sink\] latency" tests/output_60s_bounded_unchained/main_$nsource-1-$ncount-1_-1.log | awk  -F'[, ]' '{ print $4 }' >> tests/output_60s_bounded_unchained/latency_mean.txt
-            done
-        else
-            for ncount in {2..12..2};
             do
                 if [ $ncount -ge $nsplit ];
                 then
