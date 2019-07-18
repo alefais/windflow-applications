@@ -1,7 +1,7 @@
 /**
  * @file    cli_util.hpp
  * @author  Alessandra Fais
- * @date    18/06/2019
+ * @date    18/07/2019
  *
  * @brief Util for parsing command line options and printing information on stdout
  *
@@ -79,8 +79,9 @@ inline void print_app_descr(string f, size_t source, size_t map_match, size_t ca
 inline void print_summary(const atomic<long>& sent_tuples, double elapsed_time_seconds, double tot_average_latency) {
     cout << "[SUMMARY] generated " << sent_tuples << " (tuples)" << endl;
     cout << "[SUMMARY] elapsed time " << elapsed_time_seconds << " (seconds)" << endl;
-    cout << "[SUMMARY] bandwidth " << sent_tuples / elapsed_time_seconds << " (tuples/second)" << endl;
-    cout << "[SUMMARY] average latency " << tot_average_latency << " (useconds) "
+    cout << "[SUMMARY] bandwidth "
+         << sent_tuples / elapsed_time_seconds << " (tuples/s)" << endl;
+    cout << "[SUMMARY] average latency "
          << fixed << setprecision(5) << tot_average_latency / (1000.0) << " (ms) " <<  endl;
 }
 
