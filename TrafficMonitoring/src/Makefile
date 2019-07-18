@@ -1,17 +1,21 @@
 # Author: Alessandra Fais
-# Date: 13/06/2019
+# Date: 18/07/2019
 
-all: test_main test_gdal
+all: test_main_chained test_main_unchained
 
-test_main:
+test_main_chained:
+	$(MAKE) -C test_main
+
+test_main_unchained:
 	$(MAKE) -C test_main
 
 test_gdal:
 	$(MAKE) -C test_gdal
 
 clean:
-	$(MAKE) clean -C test_main
+	$(MAKE) clean -C test_main_chained
+	$(MAKE) clean -C test_main_unchained
 	$(MAKE) clean -C test_gdal
 
 .DEFAULT_GOAL := all
-.PHONY: all test_main test_gdal clean
+.PHONY: all test_main_chained test_main_unchained test_gdal clean

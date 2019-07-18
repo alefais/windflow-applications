@@ -4,7 +4,10 @@
 all:
 	$(MAKE) -C src
 
-test_main:
+test_main_chained:
+	$(MAKE) test_main -C src
+
+test_main_unchained:
 	$(MAKE) test_main -C src
 
 test_gdal:
@@ -14,4 +17,4 @@ clean:
 	$(MAKE) clean -C src
 
 .DEFAULT_GOAL := all
-.PHONY: all test_main test_gdal clean
+.PHONY: all test_main_chained test_main_unchained test_gdal clean
