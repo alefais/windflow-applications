@@ -1,7 +1,7 @@
 /**
  *  @file    main.cpp
  *  @author  Alessandra Fais
- *  @date    14/07/2019
+ *  @date    18/07/2019
  *
  *  @brief main of the WordCount application
  */
@@ -69,6 +69,7 @@ int main(int argc, char* argv[]) {
     size_t counter_par_deg = 0;
     size_t sink_par_deg = 0;
     int rate = 0;
+    total_words = 0;
     sink_zero_processed = 0;
 
     /* Program options:
