@@ -34,11 +34,11 @@ do
     do
         if [ $npred -eq 0 ];
         then
-            printf "${BLUE}windflow_frauddetection --nsource $nsource --npred 1 --nsink 1 --rate -1\n\n${NORMAL}"
+            printf "${BLUE}windflow_frauddetection --nsource $nsource --npred $nsource --nsink $nsource --rate -1\n\n${NORMAL}"
 
-            ./main_light_source_chained --nsource $nsource --npredictor 1 --nsink 1 --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-1-1_-1.log
+            ./main_light_source_chained --nsource $nsource --npredictor $nsource --nsink $nsource --rate -1 | tee ../tests/output_60s_bounded_chained/main_$nsource-$nsource-$(nsource)_-1.log
 
-        elif [ $npred -le $NPRED_MAX ];
+        elif [[ ($npred -le $NPRED_MAX) && ($npred -ge $nsource) ]];
         then
             printf "${BLUE}windflow_frauddetection --nsource $nsource --npred $npred --nsink $npred --rate -1\n\n${NORMAL}"
 
