@@ -1,7 +1,7 @@
 /**
  *  @file    sink.hpp
  *  @author  Alessandra Fais
- *  @date    17/07/2019
+ *  @date    04/09/2019
  *
  *  @brief Sink node that receives and prints the number of occurrences of each word in the input text
  */
@@ -121,7 +121,10 @@ public:
 
             // always evaluate latency when compiling with FF_BOUNDED_BUFFER MACRO set
             unsigned long tuple_latency = current_time_usecs() - (app_start_time + (*r).ts);    // latency (usecs)
-            tuple_latencies.insert(tuple_latencies.end(), (double)tuple_latency / 1000L);       // latency (ms)
+
+            // consider a sample of 1M tuples to compute latency statistics (sequential computation)
+            if (tuple_latencies.size() < 1000000)
+                tuple_latencies.insert(tuple_latencies.end(), (double)tuple_latency / 1000L);       // latency (ms)
 
             current_time = current_time_usecs();
         } else {     // EOS
@@ -135,7 +138,15 @@ public:
                      << words / t_elapsed << " (words/s) "
                      << (bytes_sum / 1048576) / t_elapsed << " (MB/s)." << endl;
 
+                unsigned long lat_stats_begin = current_time_usecs();
                 double average_latency = compute_latency_statistics();
+                unsigned long lat_stats_time = current_time_usecs() - lat_stats_begin;
+
+                cout << "[Sink] latency samples "
+                     << tuple_latencies.size()
+                     << " and time to compute stats "
+                     << lat_stats_time / 1000L
+                     << " ms." << endl;
 
                 total_MB.fetch_add(bytes_sum / 1048576);
                 total_words.fetch_add(words);
