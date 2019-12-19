@@ -1,4 +1,4 @@
-# Compile and run TrafficMonitoring
+# Compile and run Traffic Monitoring application
 
 ## Compile
 From inside the root directory `TrafficMonitoring/`

@@ -1,4 +1,4 @@
-# Compile and run WordCount
+# Compile and run Word Count application
 
 ## Compile
 From inside the root directory `WordCount/` run `make` in order to compile the tests (at the end of the compilation, the executable file can be found in `WordCount/bin`).

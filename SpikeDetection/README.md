@@ -1,4 +1,4 @@
-# Compile and run SpikeDetection
+# Compile and run Spike Detection application
 
 ## Compile
 From inside the root directory `SpikeDetection/`
