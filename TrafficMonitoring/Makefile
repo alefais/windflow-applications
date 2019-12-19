@@ -1,14 +1,14 @@
 # Author: Alessandra Fais
-# Date: 13/06/2019
+# Date: 17/08/2019
 
 all:
 	$(MAKE) -C src
 
 test_main_chained:
-	$(MAKE) test_main -C src
+	$(MAKE) test_main_chained -C src
 
 test_main_unchained:
-	$(MAKE) test_main -C src
+	$(MAKE) test_main_unchained -C src
 
 test_gdal:
 	$(MAKE) test_gdal -C src
