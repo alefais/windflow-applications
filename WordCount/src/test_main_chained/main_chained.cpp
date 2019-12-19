@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
     /// create the multi pipe
     MultiPipe topology(topology_name);
     topology.add_source(source);   // in order to exploit chaining, source and splitter must have the same parallelism degree
-    topology.chain(splitter);
+    topology.add(splitter);
     topology.add(counter);         // in order to exploit chaining, counter and sink must have the same parallelism degree
     topology.chain_sink(sink);
 
