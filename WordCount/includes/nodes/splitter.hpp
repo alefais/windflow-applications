@@ -56,6 +56,7 @@ public:
         }
         //print_tuple("[Splitter] Received tuple: ", t);
 
+        /*
         regex rgx("\\s+"); // regex quantifier (matches one or many whitespaces)
         sregex_token_iterator iter(t.text_line.begin(), t.text_line.end(), rgx, -1);
         sregex_token_iterator end;
@@ -71,7 +72,22 @@ public:
             iter++;
 
             //print_result("[Splitter] Sent tuple: ", r);
+        }*/
+
+        istringstream line(t.text_line);
+        string token;
+        result_t r;
+        while (getline(line, token, ' ')) {
+            // save the number of occurences of each word found after line splitting process
+            // and fill the output tuple fields
+            r.key = token;                          // word key
+            r.ts = t.ts;                            //timestamp
+            shipper.push(r);
+            words++;
+
+            //sprint_result("[Splitter] Sent tuple: ", r);
         }
+
         processed++;
         current_time = current_time_usecs();
     }
