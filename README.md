@@ -9,7 +9,7 @@ Two more implementations of these applications have been provided using [Apache 
 In order to run the applications contained in this project, the following dependencies are needed:
 * GCC (GNU Compiler Collection) version >= 7.2
 * WindFlow library version 1.0.0 -> see [here](https://github.com/ParaGroup/WindFlow/tags)
-* FastFlow version >= 3.0 -> see [here](https://sourceforge.net/projects/mc-fastflow/)
-* ALGLIB library version 3.15.0 (released 2019/02/21) -> it has been already included in this project. \\ <b>NOTE:</b> More details about the library can be found in the [official site](https://www.alglib.net/). In the context of this project, the functionalities contained in the [Descriptive Statistics](https://www.alglib.net/statistics/descriptive.php) package have been used. 
+* FastFlow library version >= 3.0 -> see [here](https://sourceforge.net/projects/mc-fastflow/)
+* ALGLIB library version 3.15.0 (released 2019/02/21) -> it has been already included in this project. More details about the library can be found in the [official site](https://www.alglib.net/). In the context of this project, the functionalities contained in the [Descriptive Statistics](https://www.alglib.net/statistics/descriptive.php) package have been used. 
 * GDAL library version 2.4.0 (released 2018/12/14) -> see [here](https://download.osgeo.org/gdal/2.4.0/)
 
