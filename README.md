@@ -1,4 +1,4 @@
-# Benchmarching Applications - WindFlow version
+# Benchmarking Applications - WindFlow version
 
 This repository contains a collection of Data Stream Processing applications implemented using the [WindFlow](https://github.com/ParaGroup/WindFlow) library. WindFlow is a C++17 library for parallel stream processing on shared-memory architectures featuring multi-core CPUs and GPU devices. Further information on the usage and the operators provided by the WindFlow API can be found in the [official documentation](https://paragroup.github.io/WindFlow/).
 
